@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invitation | Sapna & Binshin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'wed-dark': '#2a4436',
+              'wed-sage': '#658668',
+              'wed-gold': '#d2ad52',
+              'wed-bg': '#faf8f2'
+            },
+            fontFamily: {
+              serif: ['Playfair Display', 'serif'],
+              sans: ['Inter', 'sans-serif']
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-wed-bg text-wed-dark overflow-hidden">
+    <!-- Intro Overlay (Canvas Animation) -->
+    <div id="intro-overlay" class="fixed inset-0 bg-black z-50 flex items-center justify-center transition-opacity duration-1000 ease-out">
+        <div id="animation-container" class="relative w-full h-full flex justify-center items-center">
+            <canvas id="sequence-canvas" class="hidden absolute inset-0 w-full h-full z-10"></canvas>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="opacity-0 invisible transition-all duration-1000 ease-in-out h-screen overflow-y-auto">
+        <div class="max-w-md mx-auto bg-wed-bg min-h-full shadow-2xl relative border-x border-gray-100">
+            
+            <!-- Hero (Using assets/1.jpg) -->
+            <section class="h-[75vh] relative flex flex-col justify-end p-8 text-center text-white bg-[url('assets/1.jpg')] bg-cover bg-center reveal-element">
+                <!-- A soft gradient overlay so text remains readable against the hero image -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div class="relative z-10 pb-8">
+                    <p class="text-xs tracking-[0.3em] opacity-90 mb-3 font-sans">WE ARE GETTING MARRIED</p>
+                    <h1 class="font-serif text-5xl tracking-widest uppercase text-[#faf8f2] drop-shadow-lg">Sapna &<br>Binshin</h1>
+                </div>
+            </section>
+
+            <!-- Save The Date Widget -->
+            <section class="pt-20 pb-10 px-6 text-center reveal-element">
+                <p class="font-sans text-sm tracking-widest mb-4 uppercase text-[#333]">Save the Date</p>
+                <h2 class="font-serif text-3xl sm:text-[32px] leading-snug mb-10 font-bold text-wed-dark tracking-wide">
+                  REQUEST THE HONOR<br>OF YOUR PRESENCE
+                </h2>
+                
+                <div class="border border-gray-200 rounded-[20px] bg-white shadow-sm flex items-center justify-center py-7 mx-4 relative">
+                   <div class="flex-1 text-right pr-4 sm:pr-6 border-r border-gray-200">
+                      <p class="font-sans font-bold text-sm tracking-widest text-[#333]">MAY</p>
+                      <p class="text-gray-500 text-[11px] sm:text-xs mt-1 font-medium">2026, Sunday</p>
+                   </div>
+                   <div class="px-6 sm:px-8 flex shrink-0 justify-center">
+                      <span class="font-serif text-6xl text-wed-sage -mt-1 leading-none tracking-tighter">31</span>
+                   </div>
+                   <div class="flex-1 text-left pl-4 sm:pl-6 border-l border-gray-200">
+                      <p class="font-sans font-bold text-sm tracking-widest text-[#333]">RECEPTION</p>
+                      <p class="text-gray-500 text-[11px] sm:text-xs mt-1 font-medium tracking-wide">12:00 PM</p>
+                   </div>
+                </div>
+                
+                <p class="text-wed-gold mt-12 font-serif italic text-xl tracking-wider">14 Dhu al-Hijjah 1447 AH</p>
+            </section>
+
+            <!-- Program Timeline -->
+            <section class="py-16 px-10 sm:px-12 reveal-element">
+                <h3 class="font-serif text-[28px] mb-14 tracking-wider font-bold text-wed-dark uppercase">PROGRAM TIMELINE</h3>
+                
+                <div class="relative border-l-2 border-wed-sage ml-4 pb-4">
+                  <!-- Nikah Node -->
+                  <div class="mb-14 relative flex items-start">
+                     <!-- Dot -->
+                     <div class="absolute -left-[11px] top-[2px] w-[20px] h-[20px] rounded-full border-[3px] border-wed-sage bg-wed-bg"></div>
+                     <div class="pl-10">
+                        <h4 class="text-wed-dark text-[26px] font-serif font-bold leading-none tracking-wide">Nikah</h4>
+                        <p class="text-gray-500 text-sm mt-2 uppercase font-medium tracking-wide">10:00 AM</p>
+                     </div>
+                  </div>
+                  <!-- Reception Node -->
+                  <div class="relative flex items-start">
+                     <!-- Dot -->
+                     <div class="absolute -left-[11px] top-[2px] w-[20px] h-[20px] rounded-full border-[3px] border-wed-sage bg-wed-bg"></div>
+                     <div class="pl-10">
+                        <h4 class="text-wed-dark text-[26px] font-serif font-bold leading-none tracking-wide">Reception</h4>
+                        <p class="text-gray-500 text-sm mt-2 uppercase font-medium tracking-wide">12:00 PM</p>
+                     </div>
+                  </div>
+                </div>
+            </section>
+
+            <!-- Countdown Section -->
+            <section class="py-12 px-6 text-center bg-white border-y border-gray-100 reveal-element">
+                <h3 class="font-serif text-xl mb-8 tracking-[0.2em] font-bold text-wed-dark uppercase">Countdown</h3>
+                <div class="grid grid-cols-4 gap-3 sm:gap-4 max-w-[320px] mx-auto">
+                   <div class="bg-wed-bg rounded-xl p-3 shadow-sm flex flex-col items-center border border-[#eee]">
+                     <span id="days" class="text-3xl font-serif text-wed-sage mb-1 mt-1 leading-none shadow-sm block">00</span>
+                     <span class="text-[9px] uppercase tracking-widest text-[#777] font-bold">Days</span>
+                   </div>
+                   <div class="bg-wed-bg rounded-xl p-3 shadow-sm flex flex-col items-center border border-[#eee]">
+                     <span id="hours" class="text-3xl font-serif text-wed-sage mb-1 mt-1 leading-none shadow-sm block">00</span>
+                     <span class="text-[9px] uppercase tracking-widest text-[#777] font-bold">Hours</span>
+                   </div>
+                   <div class="bg-wed-bg rounded-xl p-3 shadow-sm flex flex-col items-center border border-[#eee]">
+                     <span id="minutes" class="text-3xl font-serif text-wed-sage mb-1 mt-1 leading-none shadow-sm block">00</span>
+                     <span class="text-[9px] uppercase tracking-widest text-[#777] font-bold">Mins</span>
+                   </div>
+                   <div class="bg-wed-bg rounded-xl p-3 shadow-sm flex flex-col items-center border border-[#eee]">
+                     <span id="seconds" class="text-3xl font-serif text-wed-sage mb-1 mt-1 leading-none shadow-sm block">00</span>
+                     <span class="text-[9px] uppercase tracking-widest text-[#777] font-bold">Secs</span>
+                   </div>
+                </div>
+            </section>
+
+            <!-- Location Section -->
+            <section class="py-16 px-8 text-center reveal-element">
+                <h3 class="font-serif text-[28px] mb-8 tracking-wider font-bold text-wed-dark uppercase">Location</h3>
+                <div class="bg-white border border-gray-100 shadow-md rounded-[24px] p-8 px-6 max-w-[340px] mx-auto relative content-center">
+                   <div class="w-[72px] h-[72px] mx-auto bg-wed-sage/10 rounded-full flex items-center justify-center mb-6">
+                     <svg class="w-9 h-9 text-wed-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                   </div>
+                   <h4 class="font-serif text-2xl font-bold text-wed-dark mb-3 tracking-wide">Hina Convention Centre</h4>
+                   <p class="text-gray-500 text-[13px] leading-relaxed mb-8 px-4 font-medium">Join us to celebrate our joyous moments at our magnificent venue.</p>
+                   <a href="https://maps.app.goo.gl/B9LnwQz77HHKauRD8" target="_blank" rel="noopener noreferrer" class="inline-block w-full py-[18px] bg-wed-dark text-white rounded-xl font-sans text-sm tracking-[0.2em] font-medium hover:bg-wed-dark/90 transition shadow-lg">GET DIRECTIONS</a>
+                </div>
+            </section>
+
+            <!-- RSVP Green Section -->
+            <section class="py-20 px-8 bg-wed-sage text-center reveal-element">
+                 <h3 class="text-white font-serif text-[28px] mb-6 tracking-widest font-bold">WILL YOU ATTEND?</h3>
+                 
+                 <!-- Dynamic Status Text -->
+                 <div id="rsvp-text-container" class="transition-opacity duration-300">
+                    <p id="rsvp-status" class="text-white italic mb-12 font-serif text-[17px] opacity-95">Your response has been removed.</p>
+                 </div>
+
+                 <!-- Button -->
+                 <button id="btn-rsvp" class="bg-white w-full py-4 rounded-lg flex items-center justify-center space-x-3 text-wed-dark hover:bg-gray-50 transition shadow-lg mx-auto sm:max-w-[85%] border border-transparent">
+                    <span id="rsvp-icon" class="flex items-center">
+                        <!-- Default check icon -->
+                        <svg class="w-[22px] h-[22px] text-wed-dark opacity-90 stroke-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </span>
+                    <span id="rsvp-label" class="font-normal italic font-serif text-[20px] pr-2">Yes, In Sha Allah</span>
+                 </button>
+            </section>
+
+            <!-- Footer -->
+            <footer class="pt-20 pb-24 px-10 text-center reveal-element">
+               <p class="text-gray-600 italic font-serif text-xl leading-relaxed mb-12 px-2 tracking-wide">
+                  "We look forward to celebrating this special day with you."
+               </p>
+               <h2 class="text-wed-gold font-serif text-[44px] tracking-wider mb-2">Sapna & Binshin</h2>
+            </footer>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
