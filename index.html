@@ -1,171 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Invitation | Sapna & Binshin</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <script>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Wedding Invitation | Sapna & Binshin</title>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet">
+   <script src="https://cdn.tailwindcss.com"></script>
+   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+   <script>
       tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              'wed-dark': '#2a4436',
-              'wed-sage': '#658668',
-              'wed-gold': '#d2ad52',
-              'wed-bg': '#faf8f2'
-            },
-            fontFamily: {
-              serif: ['Playfair Display', 'serif'],
-              sans: ['Inter', 'sans-serif']
+         theme: {
+            extend: {
+               colors: {
+                  'wed-dark': '#2a4436',
+                  'wed-sage': '#658668',
+                  'wed-gold': '#d2ad52',
+                  'wed-bg': '#faf8f2'
+               },
+               fontFamily: {
+                  serif: ['Playfair Display', 'serif'],
+                  sans: ['Inter', 'sans-serif']
+               }
             }
-          }
-        }
+         }
       }
-    </script>
-    <link rel="stylesheet" href="style.css">
+   </script>
+   <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="bg-wed-bg text-wed-dark overflow-hidden">
-    <!-- Intro Overlay (Canvas Animation) -->
-    <div id="intro-overlay" class="fixed inset-0 bg-black z-50 flex items-center justify-center transition-opacity duration-1000 ease-out">
-        <div id="animation-container" class="relative w-full h-full flex justify-center items-center">
-            <canvas id="sequence-canvas" class="hidden absolute inset-0 w-full h-full z-10"></canvas>
-        </div>
-    </div>
+   <!-- Intro Overlay (Canvas Animation) -->
+   <div id="intro-overlay"
+      class="fixed inset-0 bg-black z-50 flex items-center justify-center transition-opacity duration-1000 ease-out">
+      <div id="animation-container" class="relative w-full h-full flex justify-center items-center">
+         <canvas id="sequence-canvas" class="hidden absolute inset-0 w-full h-full z-10"></canvas>
+      </div>
+   </div>
 
-    <!-- Main Content -->
-    <div id="main-content" class="opacity-0 invisible transition-all duration-1000 ease-in-out h-screen overflow-y-auto">
-        <div class="max-w-md mx-auto bg-wed-bg min-h-full shadow-2xl relative border-x border-gray-100">
-            
-            <!-- Hero (Using assets/1.jpg) -->
-            <section class="h-[75vh] relative flex flex-col justify-end p-8 text-center text-white bg-[url('assets/1.jpg')] bg-cover bg-center reveal-element">
-                <!-- A soft gradient overlay so text remains readable against the hero image -->
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="relative z-10 pb-8">
-                    <p class="text-xs tracking-[0.3em] opacity-90 mb-3 font-sans">WE ARE GETTING MARRIED</p>
-                    <h1 class="font-serif text-5xl tracking-widest uppercase text-[#faf8f2] drop-shadow-lg">Sapna &<br>Binshin</h1>
-                </div>
-            </section>
+   <!-- Main Content -->
+   <div id="main-content" class="opacity-0 invisible transition-all duration-1000 ease-in-out h-screen overflow-y-auto">
+      <div
+         class="max-w-md mx-auto bg-[#faf9f5] min-h-full shadow-lg relative border-x border-gray-100/50 pb-10 font-sans text-gray-800">
 
-            <!-- Save The Date Widget -->
-            <section class="pt-20 pb-10 px-6 text-center reveal-element">
-                <p class="font-sans text-sm tracking-widest mb-4 uppercase text-[#333]">Save the Date</p>
-                <h2 class="font-serif text-3xl sm:text-[32px] leading-snug mb-10 font-bold text-wed-dark tracking-wide">
-                  REQUEST THE HONOR<br>OF YOUR PRESENCE
-                </h2>
-                
-                <div class="border border-gray-200 rounded-[20px] bg-white shadow-sm flex items-center justify-center py-7 mx-4 relative">
-                   <div class="flex-1 text-right pr-4 sm:pr-6 border-r border-gray-200">
-                      <p class="font-sans font-bold text-sm tracking-widest text-[#333]">MAY</p>
-                      <p class="text-gray-500 text-[11px] sm:text-xs mt-1 font-medium">2026, Sunday</p>
-                   </div>
-                   <div class="px-6 sm:px-8 flex shrink-0 justify-center">
-                      <span class="font-serif text-6xl text-wed-sage -mt-1 leading-none tracking-tighter">31</span>
-                   </div>
-                   <div class="flex-1 text-left pl-4 sm:pl-6 border-l border-gray-200">
-                      <p class="font-sans font-bold text-sm tracking-widest text-[#333]">RECEPTION</p>
-                      <p class="text-gray-500 text-[11px] sm:text-xs mt-1 font-medium tracking-wide">12:00 PM</p>
-                   </div>
-                </div>
-                
-                <p class="text-wed-gold mt-12 font-serif italic text-xl tracking-wider">14 Dhu al-Hijjah 1447 AH</p>
-            </section>
+         <!-- Hero Section -->
+         <section class="relative">
+            <img src="assets/arch.png" alt="Couple" class="w-full h-[65vh] object-cover object-top">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+            <div class="absolute bottom-6 left-0 right-0 text-center text-white px-6">
+               <p class="text-[9px] tracking-[0.25em] mb-2 font-bold opacity-90 uppercase font-sans drop-shadow-sm">We
+                  are getting married</p>
+               <h1
+                  class="font-serif text-[32px] sm:text-[36px] tracking-[0.1em] font-bold uppercase leading-tight drop-shadow-md">
+                  Yassine <span class="font-serif italic font-normal text-2xl">&amp;</span> Fathima
+               </h1>
+            </div>
+         </section>
 
-            <!-- Program Timeline -->
-            <section class="py-16 px-10 sm:px-12 reveal-element">
-                <h3 class="font-serif text-[28px] mb-14 tracking-wider font-bold text-wed-dark uppercase">PROGRAM TIMELINE</h3>
-                
-                <div class="relative border-l-2 border-wed-sage ml-4 pb-4">
-                  <!-- Nikah Node -->
-                  <div class="mb-14 relative flex items-start">
-                     <!-- Dot -->
-                     <div class="absolute -left-[11px] top-[2px] w-[20px] h-[20px] rounded-full border-[3px] border-wed-sage bg-wed-bg"></div>
-                     <div class="pl-10">
-                        <h4 class="text-wed-dark text-[26px] font-serif font-bold leading-none tracking-wide">Nikah</h4>
-                        <p class="text-gray-500 text-sm mt-2 uppercase font-medium tracking-wide">10:00 AM</p>
-                     </div>
-                  </div>
-                  <!-- Reception Node -->
-                  <div class="relative flex items-start">
-                     <!-- Dot -->
-                     <div class="absolute -left-[11px] top-[2px] w-[20px] h-[20px] rounded-full border-[3px] border-wed-sage bg-wed-bg"></div>
-                     <div class="pl-10">
-                        <h4 class="text-wed-dark text-[26px] font-serif font-bold leading-none tracking-wide">Reception</h4>
-                        <p class="text-gray-500 text-sm mt-2 uppercase font-medium tracking-wide">12:00 PM</p>
-                     </div>
-                  </div>
-                </div>
-            </section>
+         <!-- Divider -->
+         <div class="h-[4.5rem]"></div>
 
-            <!-- Countdown Section -->
-            <section class="py-12 px-6 text-center bg-white border-y border-gray-100 reveal-element">
-                <h3 class="font-serif text-xl mb-8 tracking-[0.2em] font-bold text-wed-dark uppercase">Countdown</h3>
-                <div class="grid grid-cols-4 gap-3 sm:gap-4 max-w-[320px] mx-auto">
-                   <div class="bg-wed-bg rounded-xl p-3 shadow-sm flex flex-col items-center border border-[#eee]">
-                     <span id="days" class="text-3xl font-serif text-wed-sage mb-1 mt-1 leading-none shadow-sm block">00</span>
-                     <span class="text-[9px] uppercase tracking-widest text-[#777] font-bold">Days</span>
-                   </div>
-                   <div class="bg-wed-bg rounded-xl p-3 shadow-sm flex flex-col items-center border border-[#eee]">
-                     <span id="hours" class="text-3xl font-serif text-wed-sage mb-1 mt-1 leading-none shadow-sm block">00</span>
-                     <span class="text-[9px] uppercase tracking-widest text-[#777] font-bold">Hours</span>
-                   </div>
-                   <div class="bg-wed-bg rounded-xl p-3 shadow-sm flex flex-col items-center border border-[#eee]">
-                     <span id="minutes" class="text-3xl font-serif text-wed-sage mb-1 mt-1 leading-none shadow-sm block">00</span>
-                     <span class="text-[9px] uppercase tracking-widest text-[#777] font-bold">Mins</span>
-                   </div>
-                   <div class="bg-wed-bg rounded-xl p-3 shadow-sm flex flex-col items-center border border-[#eee]">
-                     <span id="seconds" class="text-3xl font-serif text-wed-sage mb-1 mt-1 leading-none shadow-sm block">00</span>
-                     <span class="text-[9px] uppercase tracking-widest text-[#777] font-bold">Secs</span>
-                   </div>
-                </div>
-            </section>
+         <!-- Countdown Section -->
+         <section class="px-6 text-center reveal-element">
+            <h3 class="font-serif text-[26px] mb-2 text-wed-dark font-medium tracking-wide">Countdown</h3>
+            <p class="text-[8px] tracking-[0.2em] uppercase text-gray-400 mb-8 font-bold">We can't wait until this
+               moment!</p>
 
-            <!-- Location Section -->
-            <section class="py-16 px-8 text-center reveal-element">
-                <h3 class="font-serif text-[28px] mb-8 tracking-wider font-bold text-wed-dark uppercase">Location</h3>
-                <div class="bg-white border border-gray-100 shadow-md rounded-[24px] p-8 px-6 max-w-[340px] mx-auto relative content-center">
-                   <div class="w-[72px] h-[72px] mx-auto bg-wed-sage/10 rounded-full flex items-center justify-center mb-6">
-                     <svg class="w-9 h-9 text-wed-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                   </div>
-                   <h4 class="font-serif text-2xl font-bold text-wed-dark mb-3 tracking-wide">Hina Convention Centre</h4>
-                   <p class="text-gray-500 text-[13px] leading-relaxed mb-8 px-4 font-medium">Join us to celebrate our joyous moments at our magnificent venue.</p>
-                   <a href="https://maps.app.goo.gl/B9LnwQz77HHKauRD8" target="_blank" rel="noopener noreferrer" class="inline-block w-full py-[18px] bg-wed-dark text-white rounded-xl font-sans text-sm tracking-[0.2em] font-medium hover:bg-wed-dark/90 transition shadow-lg">GET DIRECTIONS</a>
-                </div>
-            </section>
+            <div class="flex justify-center items-center gap-3 sm:gap-4 max-w-[320px] mx-auto">
+               <div
+                  class="w-16 h-[72px] rounded-[14px] shadow-[0_2px_15px_rgba(0,0,0,0.03)] bg-white border border-gray-100 flex flex-col items-center justify-center">
+                  <span id="days" class="text-xl font-serif text-[#b4985a] leading-none mb-1">00</span>
+                  <span class="text-[7px] uppercase tracking-[0.1em] text-gray-400 font-bold">Days</span>
+               </div>
+               <div
+                  class="w-16 h-[72px] rounded-[14px] shadow-[0_2px_15px_rgba(0,0,0,0.03)] bg-white border border-gray-100 flex flex-col items-center justify-center">
+                  <span id="hours" class="text-xl font-serif text-[#b4985a] leading-none mb-1">00</span>
+                  <span class="text-[7px] uppercase tracking-[0.1em] text-gray-400 font-bold">Hours</span>
+               </div>
+               <div
+                  class="w-16 h-[72px] rounded-[14px] shadow-[0_2px_15px_rgba(0,0,0,0.03)] bg-white border border-gray-100 flex flex-col items-center justify-center">
+                  <span id="minutes" class="text-xl font-serif text-[#b4985a] leading-none mb-1">00</span>
+                  <span class="text-[7px] uppercase tracking-[0.1em] text-gray-400 font-bold">Minutes</span>
+               </div>
+               <div
+                  class="w-16 h-[72px] rounded-[14px] shadow-[0_2px_15px_rgba(0,0,0,0.03)] bg-white border border-gray-100 flex flex-col items-center justify-center">
+                  <span id="seconds" class="text-xl font-serif text-[#b4985a] leading-none mb-1">00</span>
+                  <span class="text-[7px] uppercase tracking-[0.1em] text-gray-400 font-bold">Seconds</span>
+               </div>
+            </div>
+         </section>
 
-            <!-- RSVP Green Section -->
-            <section class="py-20 px-8 bg-wed-sage text-center reveal-element">
-                 <h3 class="text-white font-serif text-[28px] mb-6 tracking-widest font-bold">WILL YOU ATTEND?</h3>
-                 
-                 <!-- Dynamic Status Text -->
-                 <div id="rsvp-text-container" class="transition-opacity duration-300">
-                    <p id="rsvp-status" class="text-white italic mb-12 font-serif text-[17px] opacity-95">Your response has been removed.</p>
-                 </div>
+         <div class="h-24 break-words"></div>
 
-                 <!-- Button -->
-                 <button id="btn-rsvp" class="bg-white w-full py-4 rounded-lg flex items-center justify-center space-x-3 text-wed-dark hover:bg-gray-50 transition shadow-lg mx-auto sm:max-w-[85%] border border-transparent">
-                    <span id="rsvp-icon" class="flex items-center">
-                        <!-- Default check icon -->
-                        <svg class="w-[22px] h-[22px] text-wed-dark opacity-90 stroke-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </span>
-                    <span id="rsvp-label" class="font-normal italic font-serif text-[20px] pr-2">Yes, In Sha Allah</span>
-                 </button>
-            </section>
+         <!-- Location Section -->
+         <section class="px-8 text-center reveal-element">
+            <h3 class="font-serif text-[26px] mb-8 text-wed-dark font-medium tracking-wide">Location</h3>
 
-            <!-- Footer -->
-            <footer class="pt-20 pb-24 px-10 text-center reveal-element">
-               <p class="text-gray-600 italic font-serif text-xl leading-relaxed mb-12 px-2 tracking-wide">
-                  "We look forward to celebrating this special day with you."
-               </p>
-               <h2 class="text-wed-gold font-serif text-[44px] tracking-wider mb-2">Sapna & Binshin</h2>
-            </footer>
-        </div>
-    </div>
-    
-    <script src="script.js"></script>
+            <!-- Map Placeholder -->
+            <div
+               class="w-full h-44 bg-[#eaedf0] rounded-xl mb-6 flex items-center justify-center shadow-inner border border-gray-200">
+               <span class="text-[#849a87] text-[10px] italic font-medium">[ Map Placeholder: Hina Convention Centre
+                  ]</span>
+            </div>
+
+            <h4 class="font-sans text-[10px] font-bold text-wed-dark mb-1 tracking-widest uppercase">Hina Convention
+               Centre</h4>
+            <p
+               class="text-gray-400 text-[8px] leading-relaxed uppercase tracking-[0.1em] mx-auto max-w-[200px] mb-[2px] font-bold">
+               Join us to celebrate our joyous moments</p>
+            <p class="text-gray-400 text-[8px] leading-relaxed uppercase tracking-[0.1em] mb-6 font-bold">Kerala, India
+            </p>
+
+            <a href="https://maps.app.goo.gl/B9LnwQz77HHKauRD8" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center justify-center w-full py-[14px] bg-[#1a1c1d] text-white rounded-[6px] font-sans text-[10px] tracking-[0.2em] font-bold hover:bg-black transition-colors shadow-md">
+               GET DIRECTIONS &rarr;
+            </a>
+         </section>
+
+         <div class="h-24"></div>
+
+         <!-- Schedule Section -->
+         <section class="px-10 reveal-element text-center">
+            <h3 class="font-serif text-[26px] mb-12 text-wed-dark font-medium tracking-wide">Schedule</h3>
+
+            <div class="space-y-6 text-left max-w-[260px] mx-auto">
+               <!-- Event Row -->
+               <div class="flex items-end justify-between font-sans">
+                  <span class="text-[10px] text-gray-400 font-bold tracking-widest">10:00</span>
+                  <div class="flex-grow border-b border-dotted border-gray-300 mx-3 mb-[5px]"></div>
+                  <span class="text-[10px] text-gray-800 font-medium tracking-wider">Nikah</span>
+               </div>
+               <!-- Event Row -->
+               <div class="flex items-end justify-between font-sans">
+                  <span class="text-[10px] text-gray-400 font-bold tracking-widest">12:00</span>
+                  <div class="flex-grow border-b border-dotted border-gray-300 mx-3 mb-[5px]"></div>
+                  <span class="text-[10px] text-gray-800 font-medium tracking-wider">Reception</span>
+               </div>
+            </div>
+         </section>
+
+         <div class="h-24"></div>
+
+         <!-- Dress Code Section -->
+         <section class="px-8 text-center reveal-element">
+            <h3 class="font-serif text-[26px] mb-6 text-wed-dark font-medium tracking-wide">Dress Code</h3>
+            <p class="font-sans text-[9px] tracking-[0.2em] font-bold text-gray-800 mb-8 uppercase">Semi-Formal</p>
+
+            <div class="flex justify-between max-w-[240px] mx-auto mb-8 font-sans">
+               <div class="flex-1">
+                  <h4 class="text-[10px] tracking-[0.1em] font-bold text-gray-800 uppercase mb-1">Women</h4>
+                  <p class="text-[8px] tracking-[0.1em] text-gray-400 uppercase font-medium">Modest / Elegant</p>
+               </div>
+               <div class="w-px h-8 bg-gray-200 mt-1"></div>
+               <div class="flex-1">
+                  <h4 class="text-[10px] tracking-[0.1em] font-bold text-gray-800 uppercase mb-1">Men</h4>
+                  <p class="text-[8px] tracking-[0.1em] text-gray-400 uppercase font-medium">Suit &amp; Tie</p>
+               </div>
+            </div>
+
+            <p class="font-sans text-[8px] tracking-[0.1em] font-bold text-gray-400 uppercase mb-4">Suggested Colors:
+            </p>
+            <div class="flex justify-center items-center gap-3">
+               <div class="w-5 h-5 rounded-full bg-[#f1d7d9] border border-gray-100 shadow-sm"></div>
+               <div class="w-5 h-5 rounded-full bg-[#ffffff] border border-gray-200 shadow-sm"></div>
+               <div class="w-5 h-5 rounded-full bg-[#d0cbe7] border border-gray-100 shadow-sm"></div>
+            </div>
+         </section>
+
+         <div class="h-24"></div>
+
+         <!-- RSVP Section -->
+         <section class="px-8 text-center reveal-element pb-12">
+            <h3 class="font-serif text-[26px] mb-6 text-wed-dark font-medium tracking-wide">RSVP</h3>
+
+            <!-- Dynamic Status Text -->
+            <div id="rsvp-text-container" class="transition-opacity duration-300">
+               <p id="rsvp-status" class="text-gray-400 italic mb-6 font-serif text-[14px]">Your response has been
+                  removed.</p>
+            </div>
+
+            <p class="font-sans text-[9px] tracking-[0.2em] font-bold text-gray-800 uppercase mb-2">We hope to count on
+               you</p>
+            <p class="font-sans text-[8px] tracking-[0.15em] text-gray-400 uppercase font-bold mb-8">Please reply by May
+               15th, 2026</p>
+
+            <!-- Button -->
+            <button id="btn-rsvp"
+               class="inline-flex items-center justify-center w-full max-w-[200px] py-[14px] bg-[#1a1c1d] text-white rounded-[6px] font-sans text-[10px] tracking-[0.2em] font-bold hover:bg-black transition-colors shadow-md mx-auto">
+               <span id="rsvp-icon" class="flex items-center mr-2 hidden">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+               </span>
+               <span id="rsvp-label">RESERVE MY SEAT</span>
+            </button>
+         </section>
+      </div>
+   </div>
+
+   <script src="script.js"></script>
 </body>
+
 </html>
