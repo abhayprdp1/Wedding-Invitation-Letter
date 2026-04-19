@@ -20,4 +20,5 @@
 /* Stagger animation timing slightly for multiple elements showing at once */
 .reveal-element:nth-child(even) {
   transition-delay: 0.15s;
+
 }
