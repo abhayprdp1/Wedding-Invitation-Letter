@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Animation configuration
     const totalFrames = 240;
-    const frameBaseName = 'new frame/ezgif-frame-';
+    const frameBaseName = 'new frame optimized/ezgif-frame-';
+    const frameExt = '.webp';
     const images = [];
     let isPlaying = false;
     
@@ -118,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loadNextConcurrent();
         };
         
-        img.src = `${frameBaseName}${frameNum}.png`;
+        img.src = `${frameBaseName}${frameNum}${frameExt}`;
     };
 
     // Kick off the loading queues
