@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainContent = document.getElementById('main-content');
     
     // Animation configuration
-    const totalFrames = 116; // Removed last 5 frames from 121
-    const frameBaseName = 'public/Hero/ezgif-frame-';
+    const totalFrames = 240;
+    const frameBaseName = 'new frame/ezgif-frame-';
     const images = [];
     let isPlaying = false;
     
@@ -16,24 +16,56 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!canvas) return;
         const dpr = window.devicePixelRatio || 1;
         
-        canvas.style.width = window.innerWidth + 'px';
-        canvas.style.height = window.innerHeight + 'px';
+        const container = canvas.parentElement;
+        const width = container.clientWidth;
+        const height = container.clientHeight;
         
-        canvas.width = window.innerWidth * dpr;
-        canvas.height = window.innerHeight * dpr;
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
         
         ctx.scale(dpr, dpr);
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
     };
 
+    let bgColorStr = 'rgba(235, 233, 231, 1)';
+    let bgColorTransparentStr = 'rgba(235, 233, 231, 0)';
+
+    const extractBgColor = (img) => {
+        try {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = 1;
+            tempCanvas.height = 1;
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.drawImage(img, 0, 0, 1, 1);
+            const pixelData = tempCtx.getImageData(0, 0, 1, 1).data;
+            bgColorStr = `rgba(${pixelData[0]}, ${pixelData[1]}, ${pixelData[2]}, 1)`;
+            bgColorTransparentStr = `rgba(${pixelData[0]}, ${pixelData[1]}, ${pixelData[2]}, 0)`;
+            
+            // Update the overlay background to match the frame
+            if (introOverlay) {
+                introOverlay.style.backgroundColor = bgColorStr;
+                const innerDiv = introOverlay.querySelector('div');
+                if (innerDiv) innerDiv.style.backgroundColor = bgColorStr;
+            }
+        } catch (error) {
+            console.warn("Could not extract background color (likely due to opening file directly instead of local server):", error);
+        }
+    };
+
     const drawFrameOnCanvas = (img) => {
         if (!img || !img.complete || img.naturalWidth === 0) return;
-        const canvasLogicalWidth = window.innerWidth;
-        const canvasLogicalHeight = window.innerHeight;
+        
+        const container = canvas.parentElement;
+        const canvasLogicalWidth = container.clientWidth;
+        const canvasLogicalHeight = container.clientHeight;
         
         ctx.clearRect(0, 0, canvasLogicalWidth, canvasLogicalHeight);
         
+        // Scale the canvas dynamically to cover the entire container (object-fit: cover)
         const ratio = Math.max(canvasLogicalWidth / img.naturalWidth, canvasLogicalHeight / img.naturalHeight);
         const newWidth = img.naturalWidth * ratio;
         const newHeight = img.naturalHeight * ratio;
@@ -41,57 +73,122 @@ document.addEventListener('DOMContentLoaded', () => {
         const y = (canvasLogicalHeight - newHeight) / 2;
         
         ctx.drawImage(img, x, y, newWidth, newHeight);
+
+        // Hide "Veo" watermark in the bottom right corner using a soft radial gradient patch
+        const cornerX = x + newWidth;
+        const cornerY = y + newHeight;
+        const patchSize = Math.max(newWidth, newHeight) * 0.15; // Size of the patch to cover watermark
+
+        const wmGradient = ctx.createRadialGradient(cornerX, cornerY, 0, cornerX, cornerY, patchSize);
+        wmGradient.addColorStop(0, bgColorStr);
+        wmGradient.addColorStop(0.4, bgColorStr);
+        wmGradient.addColorStop(1, bgColorTransparentStr);
+
+        ctx.fillStyle = wmGradient;
+        ctx.fillRect(cornerX - patchSize, cornerY - patchSize, patchSize, patchSize);
     };
     
-    // Preload all images
-    for (let i = 1; i <= totalFrames; i++) {
-        const img = new Image();
-        const frameNum = String(i).padStart(3, '0');
+    // Preload images with controlled concurrency to prevent browser hang
+    let loadedCount = 0;
+    const concurrency = 4;
+    let nextIndexToLoad = 1;
+    
+    const loadNextConcurrent = () => {
+        if (nextIndexToLoad > totalFrames) return;
+        const index = nextIndexToLoad++;
         
-        if (i === 1) {
-            // Draw the first frame immediately once it loads
-            img.onload = () => {
+        const img = new Image();
+        const frameNum = String(index).padStart(3, '0');
+        
+        img.onload = () => {
+            if (index === 1) {
+                extractBgColor(img);
                 canvas.style.display = 'block';
                 canvas.style.cursor = 'pointer';
                 resizeCanvas();
                 drawFrameOnCanvas(img);
-            };
-        }
+            }
+            images[index - 1] = img;
+            loadedCount++;
+            
+            // Load the next image
+            loadNextConcurrent();
+        };
+        img.onerror = () => {
+            loadNextConcurrent();
+        };
         
-        img.src = `${frameBaseName}${frameNum}.jpg`;
-        images.push(img);
+        img.src = `${frameBaseName}${frameNum}.png`;
+    };
+
+    // Kick off the loading queues
+    for (let i = 0; i < concurrency; i++) {
+        loadNextConcurrent();
     }
 
     if (canvas) {
-        // Start animation when clicking the fullscreen canvas
-        canvas.addEventListener('click', () => {
+        // Start animation when clicking the fullscreen canvas or the button
+        const startAnimation = () => {
             if (isPlaying) return;
             isPlaying = true;
             canvas.style.cursor = 'default';
             
+            const introUi = document.getElementById('intro-ui');
+            if (introUi) introUi.style.opacity = '0';
+            
             let currentFrame = 0;
             const fps = 30;
+            const frameDuration = 1000 / fps;
+            let lastTime = performance.now();
 
-            const playSequence = setInterval(() => {
+            const animate = (time) => {
                 if (currentFrame >= totalFrames - 1) {
-                    clearInterval(playSequence);
-                    
-                    // Animation complete, fade out overlay
-                    introOverlay.style.opacity = '0';
+                    // Animation complete, wait a moment then fade out overlay
                     setTimeout(() => {
-                        introOverlay.style.display = 'none';
-                        mainContent.classList.add('visible');
-                        document.body.style.overflow = 'auto'; // allow scrolling
-                        document.body.classList.remove('overflow-hidden');
-                        checkScrollAnimations();
-                    }, 1000);
+                        introOverlay.style.opacity = '0';
+                        setTimeout(() => {
+                            introOverlay.style.display = 'none';
+                            mainContent.classList.add('visible');
+                            document.body.style.overflow = 'auto'; // allow scrolling
+                            document.body.classList.remove('overflow-hidden');
+                            checkScrollAnimations();
+                        }, 1000);
+                    }, 1500); // 1.5 second pause at the end of the video to read the text
                     return;
                 }
                 
-                drawFrameOnCanvas(images[currentFrame]);
-                currentFrame++;
-            }, 1000 / fps);
-        });
+                const deltaTime = time - lastTime;
+                
+                // Use requestAnimationFrame but clamp it to our target FPS
+                if (deltaTime >= frameDuration) {
+                    // Only draw if the image has finished loading
+                    if (images[currentFrame] && images[currentFrame].complete) {
+                        drawFrameOnCanvas(images[currentFrame]);
+                        
+                        // Fade in the text after the second curtain opens (around 80% through the animation)
+                        if (currentFrame === Math.floor(totalFrames * 0.80)) {
+                            const curtainText = document.getElementById('curtain-text');
+                            if (curtainText) curtainText.style.opacity = '1';
+                        }
+                        
+                        currentFrame++;
+                        
+                        // Adjust lastTime to maintain accurate framerate
+                        lastTime = time - (deltaTime % frameDuration);
+                    }
+                }
+                
+                requestAnimationFrame(animate);
+            };
+            
+            requestAnimationFrame(animate);
+        };
+        
+        canvas.addEventListener('click', startAnimation);
+        const btnEnter = document.getElementById('btn-enter');
+        if (btnEnter) {
+            btnEnter.addEventListener('click', startAnimation);
+        }
     }
 
     // Window resize handling for canvas
@@ -114,6 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('in-view');
+            } else {
+                entry.target.classList.remove('in-view');
             }
         });
     }, observerOptions);
@@ -125,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // 2. Countdown Logic
-    const weddingDate = new Date('May 31, 2026 12:00:00').getTime();
+    const weddingDate = new Date('May 21, 2026 12:00:00').getTime();
     
     const updateCountdown = () => {
         const now = new Date().getTime();
@@ -212,6 +311,112 @@ document.addEventListener('DOMContentLoaded', () => {
                 rsvpLabel.innerText = "Yes, In Sha Allah";
                 rsvpLabel.classList.add('text-[20px]');
                 rsvpLabel.classList.remove('text-[18px]');
+            }
+        });
+    }
+
+    // 4. Scratch Card Logic
+    const scratchCanvas = document.getElementById('scratch-canvas');
+    if (scratchCanvas) {
+        const scratchCtx = scratchCanvas.getContext('2d');
+        let isDrawing = false;
+        let isRevealed = false;
+
+        // Initialize Canvas
+        const initCanvas = () => {
+            scratchCanvas.width = scratchCanvas.offsetWidth;
+            scratchCanvas.height = scratchCanvas.offsetHeight;
+            
+            // Fill with gold gradient
+            const gradient = scratchCtx.createLinearGradient(0, 0, scratchCanvas.width, scratchCanvas.height);
+            gradient.addColorStop(0, '#ebd498');
+            gradient.addColorStop(0.5, '#a8823a');
+            gradient.addColorStop(1, '#d2ad52');
+            
+            scratchCtx.fillStyle = gradient;
+            scratchCtx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+            
+            // Add "Scratch Here" text
+            scratchCtx.fillStyle = '#ffffff';
+            scratchCtx.font = 'bold 16px Inter, sans-serif';
+            scratchCtx.textAlign = 'center';
+            scratchCtx.textBaseline = 'middle';
+            scratchCtx.shadowColor = 'rgba(0,0,0,0.2)';
+            scratchCtx.shadowBlur = 4;
+            scratchCtx.shadowOffsetX = 1;
+            scratchCtx.shadowOffsetY = 1;
+            scratchCtx.fillText('SCRATCH TO REVEAL', scratchCanvas.width / 2, scratchCanvas.height / 2);
+            
+            // Reset composite operation to default
+            scratchCtx.globalCompositeOperation = 'source-over';
+        };
+
+        // Needs to wait for fonts and layout to settle
+        setTimeout(initCanvas, 100);
+
+        const getMousePos = (e) => {
+            const rect = scratchCanvas.getBoundingClientRect();
+            // Handle both touch and mouse events
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        };
+
+        const scratch = (e) => {
+            if (!isDrawing || isRevealed) return;
+            e.preventDefault();
+            
+            const pos = getMousePos(e);
+            
+            scratchCtx.globalCompositeOperation = 'destination-out';
+            scratchCtx.beginPath();
+            scratchCtx.arc(pos.x, pos.y, 22, 0, Math.PI * 2);
+            scratchCtx.fill();
+            
+            checkReveal();
+        };
+
+        const checkReveal = () => {
+            // Check how much is scratched off (checking a grid of pixels for performance)
+            const imageData = scratchCtx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height);
+            const pixels = imageData.data;
+            let transparentPixels = 0;
+            const totalPixels = pixels.length / 4;
+            
+            // Check every 16th pixel for speed
+            for (let i = 3; i < pixels.length; i += 64) {
+                if (pixels[i] === 0) {
+                    transparentPixels++;
+                }
+            }
+            
+            const transparentPercentage = (transparentPixels / (totalPixels / 16)) * 100;
+            
+            if (transparentPercentage > 35) {
+                isRevealed = true;
+                scratchCanvas.style.opacity = '0';
+                setTimeout(() => {
+                    scratchCanvas.style.pointerEvents = 'none';
+                }, 700);
+            }
+        };
+
+        // Event Listeners
+        scratchCanvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+        scratchCanvas.addEventListener('mousemove', scratch);
+        window.addEventListener('mouseup', () => { isDrawing = false; });
+
+        scratchCanvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, { passive: false });
+        scratchCanvas.addEventListener('touchmove', scratch, { passive: false });
+        window.addEventListener('touchend', () => { isDrawing = false; });
+        
+        // Handle resize
+        window.addEventListener('resize', () => {
+            if (!isRevealed) {
+                initCanvas();
             }
         });
     }

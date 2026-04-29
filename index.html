@@ -8,7 +8,7 @@
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
       rel="stylesheet">
    <script src="https://cdn.tailwindcss.com"></script>
    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
@@ -24,7 +24,8 @@
                },
                fontFamily: {
                   serif: ['Playfair Display', 'serif'],
-                  sans: ['Inter', 'sans-serif']
+                  sans: ['Inter', 'sans-serif'],
+                  script: ['Great Vibes', 'cursive']
                }
             }
          }
@@ -36,169 +37,316 @@
 <body class="bg-wed-bg text-wed-dark overflow-hidden">
    <!-- Intro Overlay (Canvas Animation) -->
    <div id="intro-overlay"
-      class="fixed inset-0 bg-black z-50 flex items-center justify-center transition-opacity duration-1000 ease-out">
-      <div id="animation-container" class="relative w-full h-full flex justify-center items-center">
-         <canvas id="sequence-canvas" class="hidden absolute inset-0 w-full h-full z-10"></canvas>
+      class="fixed inset-0 bg-[#fbf9f4] z-50 flex justify-center transition-opacity duration-1000 ease-out">
+      <div class="w-full bg-[#fbf9f4] h-full relative flex flex-col">
+         <div id="animation-container" class="relative w-full flex-grow flex justify-center items-center overflow-hidden">
+            <canvas id="sequence-canvas" class="hidden absolute inset-0 w-full h-full z-10"></canvas>
+            
+            <!-- Curtain Reveal Text -->
+            <div id="curtain-text" class="absolute inset-0 z-[15] flex flex-col justify-center items-center pointer-events-none opacity-0 transition-opacity duration-[1500ms] ease-out">
+               <h1 class="font-serif text-[48px] sm:text-[56px] text-[#2d2822] tracking-widest leading-[1.1] font-medium relative z-10 drop-shadow-[0_4px_10px_rgba(255,255,255,0.9)] text-center uppercase">
+                  Sapna <br><span class="font-script text-[56px] text-[#a8823a] font-normal leading-none block my-3 lowercase drop-shadow-[0_2px_4px_rgba(168,130,58,0.3)]">loves</span> Binshin
+               </h1>
+            </div>
+
+            <!-- Mobile Responsive UI Overlay -->
+            <div id="intro-ui" class="absolute inset-0 z-20 flex flex-col justify-end pb-24 items-center pointer-events-none transition-opacity duration-500">
+
+               <div class="text-center flex flex-col items-center">
+                  <div class="w-px h-16 bg-gradient-to-b from-transparent via-[#a8823a]/50 to-[#a8823a] mb-6"></div>
+                  <p class="font-script text-[42px] font-medium text-[#a8823a] mb-6 drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)]" style="text-shadow: 0 2px 4px rgba(168,130,58,0.2);">Reveal Invitation</p>
+                  <div id="btn-enter" class="w-14 h-14 rounded-full border-[1px] border-[#a8823a]/60 flex items-center justify-center animate-[bounce_3s_infinite] bg-white/60 backdrop-blur-md shadow-[0_10px_30px_rgba(168,130,58,0.2)] hover:scale-110 transition-transform duration-500 cursor-pointer pointer-events-auto">
+                     <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#ebd498] to-[#a8823a] flex items-center justify-center shadow-[0_2px_10px_rgba(168,130,58,0.4)]">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        </svg>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
       </div>
    </div>
 
    <!-- Main Content -->
-   <div id="main-content" class="opacity-0 invisible transition-all duration-1000 ease-in-out h-screen overflow-y-auto">
+   <div id="main-content"
+      class="opacity-0 invisible transition-all duration-1000 ease-in-out h-screen overflow-y-auto bg-[#fbf9f4]">
       <div
-         class="max-w-md mx-auto bg-[#faf9f5] min-h-full shadow-lg relative border-x border-gray-100/50 pb-10 font-sans text-gray-800">
+         class="max-w-md mx-auto bg-[#FDFBF7] min-h-full shadow-[0_0_50px_rgba(0,0,0,0.1)] relative border-x border-wed-gold/30 font-sans text-[#2d2822]">
 
-         <!-- Hero Section -->
-         <section class="relative">
-            <img src="assets/arch.png" alt="Couple" class="w-full h-[65vh] object-cover object-top">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
-            <div class="absolute bottom-6 left-0 right-0 text-center text-white px-6">
-               <p class="text-[9px] tracking-[0.25em] mb-2 font-bold opacity-90 uppercase font-sans drop-shadow-sm">We
-                  are getting married</p>
-               <h1
-                  class="font-serif text-[32px] sm:text-[36px] tracking-[0.1em] font-bold uppercase leading-tight drop-shadow-md">
-                  Yassine <span class="font-serif italic font-normal text-2xl">&amp;</span> Fathima
-               </h1>
+         <!-- Cinematic Hero Section -->
+         <section class="relative h-screen flex flex-col justify-between overflow-hidden">
+            <img src="assets/3.jpg" alt="Couple Detail"
+               class="absolute inset-0 w-full h-full object-cover object-top">
+
+            <!-- Bismillah Header Glowing -->
+            <div class="relative top-0 left-0 right-0 pt-16 text-center z-10 animate-float">
+               <div class="w-px h-12 bg-gradient-to-b from-transparent to-wed-gold mx-auto mb-6"></div>
+               <p
+                  class="font-serif text-[56px] text-[#a8823a] mb-2 mt-4 leading-none drop-shadow-sm">
+                  ﷽</p>
+               <p class="font-serif text-[10px] tracking-[0.25em] text-[#4a4238] italic uppercase font-medium">In the
+                  name of Allah<br>The Most Gracious, The Most Merciful</p>
             </div>
-         </section>
 
-         <!-- Divider -->
-         <div class="h-[4.5rem]"></div>
-
-         <!-- Countdown Section -->
-         <section class="px-6 text-center reveal-element">
-            <h3 class="font-serif text-[26px] mb-2 text-wed-dark font-medium tracking-wide">Countdown</h3>
-            <p class="text-[8px] tracking-[0.2em] uppercase text-gray-400 mb-8 font-bold">We can't wait until this
-               moment!</p>
-
-            <div class="flex justify-center items-center gap-3 sm:gap-4 max-w-[320px] mx-auto">
-               <div
-                  class="w-16 h-[72px] rounded-[14px] shadow-[0_2px_15px_rgba(0,0,0,0.03)] bg-white border border-gray-100 flex flex-col items-center justify-center">
-                  <span id="days" class="text-xl font-serif text-[#b4985a] leading-none mb-1">00</span>
-                  <span class="text-[7px] uppercase tracking-[0.1em] text-gray-400 font-bold">Days</span>
-               </div>
-               <div
-                  class="w-16 h-[72px] rounded-[14px] shadow-[0_2px_15px_rgba(0,0,0,0.03)] bg-white border border-gray-100 flex flex-col items-center justify-center">
-                  <span id="hours" class="text-xl font-serif text-[#b4985a] leading-none mb-1">00</span>
-                  <span class="text-[7px] uppercase tracking-[0.1em] text-gray-400 font-bold">Hours</span>
-               </div>
-               <div
-                  class="w-16 h-[72px] rounded-[14px] shadow-[0_2px_15px_rgba(0,0,0,0.03)] bg-white border border-gray-100 flex flex-col items-center justify-center">
-                  <span id="minutes" class="text-xl font-serif text-[#b4985a] leading-none mb-1">00</span>
-                  <span class="text-[7px] uppercase tracking-[0.1em] text-gray-400 font-bold">Minutes</span>
-               </div>
-               <div
-                  class="w-16 h-[72px] rounded-[14px] shadow-[0_2px_15px_rgba(0,0,0,0.03)] bg-white border border-gray-100 flex flex-col items-center justify-center">
-                  <span id="seconds" class="text-xl font-serif text-[#b4985a] leading-none mb-1">00</span>
-                  <span class="text-[7px] uppercase tracking-[0.1em] text-gray-400 font-bold">Seconds</span>
+            <!-- Majestic Names Container -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center z-10 -translate-y-8 reveal-element px-8 pointer-events-none">
+               <div class="relative flex flex-col items-center w-full max-w-sm">
+                  <p class="text-[10px] tracking-[0.6em] font-bold text-[#a8823a] mb-6 uppercase drop-shadow-[0_2px_4px_rgba(255,255,255,0.8)]">We are getting married</p>
+                  
+                  <h1 class="font-serif text-[44px] tracking-[0.25em] text-[#2d2822] leading-none font-medium uppercase relative z-10 drop-shadow-[0_4px_10px_rgba(255,255,255,0.9)]">
+                     Sapna
+                  </h1>
+                  
+                  <div class="my-6 relative flex items-center justify-center w-full z-10">
+                     <div class="w-16 h-px bg-gradient-to-r from-transparent via-[#a8823a] to-transparent"></div>
+                     <span class="font-script text-[54px] text-[#a8823a] mx-6 leading-none drop-shadow-md" style="text-shadow: 0 2px 4px rgba(168,130,58,0.2);">&amp;</span>
+                     <div class="w-16 h-px bg-gradient-to-r from-transparent via-[#a8823a] to-transparent"></div>
+                  </div>
+                  
+                  <h1 class="font-serif text-[44px] tracking-[0.25em] text-[#2d2822] leading-none font-medium uppercase relative z-10 drop-shadow-[0_4px_10px_rgba(255,255,255,0.9)]">
+                     Binshin
+                  </h1>
                </div>
             </div>
          </section>
+         <!-- Section 4.jpg Wrapper: Countdown & Location -->
+         <div class="relative w-full py-16 overflow-hidden">
+            <img src="assets/4.jpg" alt="Theme Background" class="absolute inset-0 w-full h-full object-cover">
+            
+            <div class="relative z-10">
+               <!-- Immersive Glass Countdown Section -->
+               <section class="px-6 text-center reveal-element relative mb-24">
+                  <!-- Background ambient glow -->
+                  <div
+                     class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] bg-white/40 rounded-full blur-[80px] -z-10">
+                  </div>
 
-         <div class="h-24 break-words"></div>
+                  <div class="flex items-center justify-center gap-4 mb-6">
+                     <div class="w-16 h-[1px] bg-gradient-to-r from-transparent to-[#a8823a]/50"></div>
+                     <h3 class="font-serif text-[26px] text-[#a8823a] font-normal tracking-wide italic">The Countdown</h3>
+                     <div class="w-16 h-[1px] bg-gradient-to-l from-transparent to-[#a8823a]/50"></div>
+                  </div>
+                  <p class="text-[8px] tracking-[0.3em] uppercase text-[#4a4238] mb-10 font-bold">We can't wait until this moment!</p>
 
-         <!-- Location Section -->
-         <section class="px-8 text-center reveal-element">
-            <h3 class="font-serif text-[26px] mb-8 text-wed-dark font-medium tracking-wide">Location</h3>
+                  <!-- Scratch Card Feature -->
+                  <div class="relative w-[280px] h-[100px] mx-auto mb-10 rounded-[20px] overflow-hidden shadow-[0_10px_30px_rgba(168,130,58,0.2)] border-2 border-[#a8823a]/30">
+                     <!-- Hidden Date Layer -->
+                     <div class="absolute inset-0 bg-gradient-to-br from-[#fdfbf7] to-[#f5eed9] flex flex-col items-center justify-center">
+                        <span class="text-[10px] uppercase tracking-[0.3em] font-bold text-[#a8823a] mb-2 drop-shadow-sm">The Big Day</span>
+                        <h4 class="font-serif text-[36px] text-[#2d2822] font-medium leading-none drop-shadow-md">21/05/2026</h4>
+                     </div>
+                     <!-- Scratch Canvas Overlay -->
+                     <canvas id="scratch-canvas" class="absolute inset-0 z-10 cursor-pointer touch-none transition-opacity duration-700"></canvas>
+                  </div>
 
-            <!-- Map Placeholder -->
-            <div
-               class="w-full h-44 bg-[#eaedf0] rounded-xl mb-6 flex items-center justify-center shadow-inner border border-gray-200">
-               <span class="text-[#849a87] text-[10px] italic font-medium">[ Map Placeholder: Hina Convention Centre
-                  ]</span>
-            </div>
+                  <div class="flex justify-center items-center gap-3 sm:gap-4 max-w-[340px] mx-auto animate-float">
+                     <div
+                        class="w-[72px] h-[86px] rounded-[16px] backdrop-blur-md bg-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center relative overflow-hidden border border-[#a8823a]/20 group hover:border-[#a8823a]/50 transition-colors duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-br from-[#a8823a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span id="days" class="text-[28px] font-serif text-[#a8823a] leading-none mb-2 font-medium">00</span>
+                        <span class="text-[8px] uppercase tracking-[0.2em] text-[#4a4238] font-bold">Days</span>
+                     </div>
+                     <div
+                        class="w-[72px] h-[86px] rounded-[16px] backdrop-blur-md bg-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center relative overflow-hidden border border-[#a8823a]/20 group hover:border-[#a8823a]/50 transition-colors duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-br from-[#a8823a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span id="hours" class="text-[28px] font-serif text-[#a8823a] leading-none mb-2 font-medium">00</span>
+                        <span class="text-[8px] uppercase tracking-[0.2em] text-[#4a4238] font-bold">Hours</span>
+                     </div>
+                     <div
+                        class="w-[72px] h-[86px] rounded-[16px] backdrop-blur-md bg-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center relative overflow-hidden border border-[#a8823a]/20 group hover:border-[#a8823a]/50 transition-colors duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-br from-[#a8823a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span id="minutes" class="text-[28px] font-serif text-[#a8823a] leading-none mb-2 font-medium">00</span>
+                        <span class="text-[8px] uppercase tracking-[0.2em] text-[#4a4238] font-bold">Mins</span>
+                     </div>
+                     <div
+                        class="w-[72px] h-[86px] rounded-[16px] backdrop-blur-md bg-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center relative overflow-hidden border border-[#a8823a]/20 group hover:border-[#a8823a]/50 transition-colors duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-br from-[#a8823a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span id="seconds" class="text-[28px] font-serif text-[#a8823a] leading-none mb-2 font-medium">00</span>
+                        <span class="text-[8px] uppercase tracking-[0.2em] text-[#4a4238] font-bold">Secs</span>
+                     </div>
+                  </div>
+               </section>
 
-            <h4 class="font-sans text-[10px] font-bold text-wed-dark mb-1 tracking-widest uppercase">Hina Convention
-               Centre</h4>
-            <p
-               class="text-gray-400 text-[8px] leading-relaxed uppercase tracking-[0.1em] mx-auto max-w-[200px] mb-[2px] font-bold">
-               Join us to celebrate our joyous moments</p>
-            <p class="text-gray-400 text-[8px] leading-relaxed uppercase tracking-[0.1em] mb-6 font-bold">Kerala, India
-            </p>
+               <!-- Location Section -->
+               <section class="px-8 text-center reveal-element">
+                  <h3 class="font-serif text-[30px] mb-12 text-[#2d2822] font-medium tracking-wide">Location</h3>
 
-            <a href="https://maps.app.goo.gl/B9LnwQz77HHKauRD8" target="_blank" rel="noopener noreferrer"
-               class="inline-flex items-center justify-center w-full py-[14px] bg-[#1a1c1d] text-white rounded-[6px] font-sans text-[10px] tracking-[0.2em] font-bold hover:bg-black transition-colors shadow-md">
-               GET DIRECTIONS &rarr;
-            </a>
+                  <!-- Rich Map Area Restored to Icon Placeholder -->
+                  <div
+                     class="relative w-full h-52 rounded-[24px] mb-10 p-[2px] bg-gradient-to-b from-[#a8823a]/40 to-transparent shadow-[0_15px_40px_rgba(0,0,0,0.1)] mx-auto max-w-[320px] overflow-hidden group">
+                     <div class="absolute inset-0 bg-white/80 backdrop-blur-sm rounded-[22px]"></div>
+                     <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#d2ad52 1px, transparent 1px); background-size: 14px 14px;"></div>
+                     <div class="w-full h-full rounded-[22px] flex flex-col items-center justify-center relative z-10 p-6 backdrop-blur-sm border border-white/50">
+                        <div class="w-12 h-12 rounded-full bg-[#a8823a]/10 flex items-center justify-center mb-4 border border-[#a8823a]/30 shadow-[0_0_15px_rgba(210,173,82,0.15)] group-hover:scale-110 transition-transform duration-500">
+                           <svg class="w-6 h-6 text-[#a8823a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path>
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                           </svg>
+                        </div>
+                        <span class="text-[#a8823a] text-[10px] tracking-[0.1em] uppercase font-bold text-center leading-relaxed">Hina Convention Centre Map</span>
+                     </div>
+                  </div>
+
+                  <h4 class="font-sans text-[14px] text-[#2d2822] font-bold mb-2 tracking-[0.2em] uppercase">Hina Convention Centre</h4>
+                  <p class="text-[#4a4238] text-[9px] leading-relaxed uppercase tracking-[0.2em] mx-auto max-w-[220px] mb-8 font-semibold">Join us to celebrate our joyous moments, In Sha Allah.</p>
+
+                  <a href="https://maps.app.goo.gl/B9LnwQz77HHKauRD8" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full max-w-[280px] py-[18px] bg-gradient-to-r from-[#d2ad52] via-[#fcf6ba] to-[#d2ad52] text-[#2d2822] rounded-full font-sans text-[11px] tracking-[0.25em] font-extrabold hover:shadow-[0_0_30px_rgba(210,173,82,0.4)] hover:scale-105 transition-all duration-300">
+                     GET DIRECTIONS
+                  </a>
+               </section>  
          </section>
 
-         <div class="h-24"></div>
+            </div> <!-- End 4.jpg z-10 content -->
+         </div> <!-- End 4.jpg wrapper -->
 
-         <!-- Schedule Section -->
-         <section class="px-10 reveal-element text-center">
-            <h3 class="font-serif text-[26px] mb-12 text-wed-dark font-medium tracking-wide">Schedule</h3>
+         <!-- Schedule Section Frame (5.jpg) -->
+         <div class="px-6 py-16 w-full flex items-center justify-center relative z-10 bg-gradient-to-br from-[#fdfbf7] via-[#f5eed9] to-[#ebd498] overflow-hidden">
+            <!-- Decorative golden accents -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white/50 rounded-full blur-[80px]"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-[#a8823a]/20 rounded-full blur-[80px]"></div>
+            <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#d2ad52 1px, transparent 1px); background-size: 20px 20px;"></div>
+            
+            <div class="relative w-full max-w-[400px] rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(168,130,58,0.2)] border border-[#a8823a]/20 z-10">
+               <!-- The requested 5.jpg background JUST for timings -->
+               <img src="assets/5.jpg" alt="Timings Background" class="absolute inset-0 w-full h-full object-cover">
+               <!-- Subtle overlay to make text readable over the background -->
+               <div class="absolute inset-0 bg-white/40 backdrop-blur-[2px]"></div>
 
-            <div class="space-y-6 text-left max-w-[260px] mx-auto">
-               <!-- Event Row -->
-               <div class="flex items-end justify-between font-sans">
-                  <span class="text-[10px] text-gray-400 font-bold tracking-widest">10:00</span>
-                  <div class="flex-grow border-b border-dotted border-gray-300 mx-3 mb-[5px]"></div>
-                  <span class="text-[10px] text-gray-800 font-medium tracking-wider">Nikah</span>
-               </div>
-               <!-- Event Row -->
-               <div class="flex items-end justify-between font-sans">
-                  <span class="text-[10px] text-gray-400 font-bold tracking-widest">12:00</span>
-                  <div class="flex-grow border-b border-dotted border-gray-300 mx-3 mb-[5px]"></div>
-                  <span class="text-[10px] text-gray-800 font-medium tracking-wider">Reception</span>
-               </div>
+               <section class="relative z-10 py-16 text-center">
+                  <h3 class="font-serif text-[30px] mb-12 text-[#2d2822] font-medium tracking-wide drop-shadow-sm">Timings</h3>
+                  <div class="space-y-8 text-left max-w-[300px] mx-auto relative px-4">
+                     <!-- Vertical gold gradient line -->
+                     <div class="absolute left-[38px] top-4 bottom-4 w-[2px] bg-gradient-to-b from-[#a8823a]/80 via-[#a8823a]/20 to-[#a8823a]/80 rounded-full"></div>
+                     <!-- Event Row 1 -->
+                     <div class="flex items-center relative z-10 group cursor-default">
+                        <span class="text-[12px] text-[#2d2822] font-bold tracking-widest w-[44px] py-1 pr-3 text-right">10:00</span>
+                        <div class="w-3 h-3 rounded-full border-2 border-white bg-[#a8823a] flex-shrink-0 group-hover:scale-125 transition-transform shadow-[0_2px_5px_rgba(0,0,0,0.1)]"></div>
+                        <div class="pl-8 w-full flex justify-between items-center py-2 transition-transform group-hover:translate-x-2">
+                           <span class="text-[18px] text-[#2d2822] font-serif tracking-wide drop-shadow-sm">Nikah</span>
+                           <span class="text-[9px] text-[#4a4238] uppercase font-bold tracking-[0.2em]">Ceremony</span>
+                        </div>
+                     </div>
+                     <!-- Event Row 2 -->
+                     <div class="flex items-center relative z-10 group cursor-default">
+                        <span class="text-[12px] text-[#2d2822] font-bold tracking-widest w-[44px] py-1 pr-3 text-right">12:00</span>
+                        <div class="w-3 h-3 rounded-full border-2 border-white bg-[#a8823a] flex-shrink-0 group-hover:scale-125 transition-transform shadow-[0_2px_5px_rgba(0,0,0,0.1)]"></div>
+                        <div class="pl-8 w-full flex justify-between items-center py-2 transition-transform group-hover:translate-x-2">
+                           <span class="text-[18px] text-[#2d2822] font-serif tracking-wide drop-shadow-sm">Walima</span>
+                           <span class="text-[9px] text-[#4a4238] uppercase font-bold tracking-[0.2em]">Reception</span>
+                        </div>
+                     </div>
+                  </div>
+               </section>
             </div>
-         </section>
+         </div>
 
-         <div class="h-24"></div>
+         <!-- Gallery Section (Golden Touch Background) -->
+         <div class="relative w-full py-16 overflow-hidden bg-gradient-to-br from-[#fdfbf7] via-[#f5eed9] to-[#ebd498]">
+            <!-- Decorative golden accents -->
+            <div class="absolute top-0 left-0 w-64 h-64 bg-white/40 rounded-full blur-[80px]"></div>
+            <div class="absolute bottom-0 right-0 w-64 h-64 bg-[#a8823a]/20 rounded-full blur-[80px]"></div>
+            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#d2ad52 1px, transparent 1px); background-size: 20px 20px;"></div>
 
-         <!-- Dress Code Section -->
-         <section class="px-8 text-center reveal-element">
-            <h3 class="font-serif text-[26px] mb-6 text-wed-dark font-medium tracking-wide">Dress Code</h3>
-            <p class="font-sans text-[9px] tracking-[0.2em] font-bold text-gray-800 mb-8 uppercase">Semi-Formal</p>
+            <section class="relative z-10 px-0 text-center reveal-element w-full overflow-hidden">
+               <h3 class="font-script text-[48px] leading-[1.2] mb-1 text-[#a8823a] font-normal drop-shadow-md px-8" style="text-shadow: 0 2px 5px rgba(168,130,58,0.2);">Captured Moments</h3>
+               <p class="font-sans text-[10px] tracking-[0.3em] font-medium text-[#4a4238] mb-10 uppercase drop-shadow-sm px-8">
+                  Our Beautiful Memories</p>
 
-            <div class="flex justify-between max-w-[240px] mx-auto mb-8 font-sans">
-               <div class="flex-1">
-                  <h4 class="text-[10px] tracking-[0.1em] font-bold text-gray-800 uppercase mb-1">Women</h4>
-                  <p class="text-[8px] tracking-[0.1em] text-gray-400 uppercase font-medium">Modest / Elegant</p>
+               <!-- Horizontal Scrolling Gallery -->
+               <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 px-8 pb-10" style="scrollbar-width: none; -ms-overflow-style: none;">
+                  <!-- Gallery Item 0 -->
+                  <div class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
+                     <img src="assets/1.jpg" alt="Gallery 0" class="absolute inset-0 w-full h-full object-cover">
+                  </div>
+                  <!-- Gallery Item 1 -->
+                  <div class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
+                     <img src="assets/2.jpg" alt="Gallery 1" class="absolute inset-0 w-full h-full object-cover">
+                  </div>
+                  <!-- Gallery Item 2 -->
+                  <div class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
+                     <img src="assets/10.jpg" alt="Gallery 2" class="absolute inset-0 w-full h-full object-cover">
+                  </div>
+                  <!-- Gallery Item 3 -->
+                  <div class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
+                     <img src="assets/11.jpg" alt="Gallery 3" class="absolute inset-0 w-full h-full object-cover">
+                  </div>
+                  <!-- Gallery Item 4 -->
+                  <div class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
+                     <img src="assets/12.jpg" alt="Gallery 4" class="absolute inset-0 w-full h-full object-cover">
+                  </div>
+                  <!-- Invisible spacer to allow last item to snap to center cleanly -->
+                  <div class="shrink-0 w-[1px]"></div>
                </div>
-               <div class="w-px h-8 bg-gray-200 mt-1"></div>
-               <div class="flex-1">
-                  <h4 class="text-[10px] tracking-[0.1em] font-bold text-gray-800 uppercase mb-1">Men</h4>
-                  <p class="text-[8px] tracking-[0.1em] text-gray-400 uppercase font-medium">Suit &amp; Tie</p>
-               </div>
-            </div>
 
-            <p class="font-sans text-[8px] tracking-[0.1em] font-bold text-gray-400 uppercase mb-4">Suggested Colors:
-            </p>
-            <div class="flex justify-center items-center gap-3">
-               <div class="w-5 h-5 rounded-full bg-[#f1d7d9] border border-gray-100 shadow-sm"></div>
-               <div class="w-5 h-5 rounded-full bg-[#ffffff] border border-gray-200 shadow-sm"></div>
-               <div class="w-5 h-5 rounded-full bg-[#d0cbe7] border border-gray-100 shadow-sm"></div>
-            </div>
-         </section>
-
-         <div class="h-24"></div>
-
-         <!-- RSVP Section -->
-         <section class="px-8 text-center reveal-element pb-12">
-            <h3 class="font-serif text-[26px] mb-6 text-wed-dark font-medium tracking-wide">RSVP</h3>
-
-            <!-- Dynamic Status Text -->
-            <div id="rsvp-text-container" class="transition-opacity duration-300">
-               <p id="rsvp-status" class="text-gray-400 italic mb-6 font-serif text-[14px]">Your response has been
-                  removed.</p>
-            </div>
-
-            <p class="font-sans text-[9px] tracking-[0.2em] font-bold text-gray-800 uppercase mb-2">We hope to count on
-               you</p>
-            <p class="font-sans text-[8px] tracking-[0.15em] text-gray-400 uppercase font-bold mb-8">Please reply by May
-               15th, 2026</p>
-
-            <!-- Button -->
-            <button id="btn-rsvp"
-               class="inline-flex items-center justify-center w-full max-w-[200px] py-[14px] bg-[#1a1c1d] text-white rounded-[6px] font-sans text-[10px] tracking-[0.2em] font-bold hover:bg-black transition-colors shadow-md mx-auto">
-               <span id="rsvp-icon" class="flex items-center mr-2 hidden">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+               <!-- Swipe Indicator -->
+               <div class="flex justify-center items-center gap-3 mt-2 opacity-80 animate-pulse">
+                  <svg class="w-4 h-4 text-[#a8823a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                   </svg>
-               </span>
-               <span id="rsvp-label">RESERVE MY SEAT</span>
-            </button>
+                  <span class="text-[9px] uppercase tracking-[0.2em] text-[#4a4238] font-bold">Swipe to view</span>
+                  <svg class="w-4 h-4 text-[#a8823a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                  </svg>
+               </div>
+            </section>
+         </div>
+
+         <!-- RSVP Section - Ultimate Luxury Card -->
+         <section class="px-6 text-center reveal-element pb-20 pt-12 relative w-full bg-gradient-to-tr from-[#fdfbf7] via-[#f5eed9] to-[#ebd498] overflow-hidden">
+            <!-- Decorative golden accents -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white/50 rounded-full blur-[80px]"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-[#a8823a]/20 rounded-full blur-[80px]"></div>
+            <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#d2ad52 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+            <div
+               class="bg-white/70 backdrop-blur-md p-10 pt-12 rounded-[32px] border border-[#a8823a]/30 relative shadow-[0_20px_50px_rgba(168,130,58,0.2)] overflow-hidden mx-auto max-w-md z-10">
+               <!-- Magical ambient lighting -->
+               <div class="absolute top-0 right-0 w-48 h-48 bg-[#a8823a]/5 rounded-full blur-[60px]"></div>
+               <div class="absolute bottom-0 left-0 w-48 h-48 bg-[#a8823a]/5 rounded-full blur-[60px]"></div>
+
+               <div class="absolute top-4 left-4 w-12 h-12 border-t border-l border-[#a8823a]/30 rounded-tl-[16px]">
+               </div>
+               <div class="absolute bottom-4 right-4 w-12 h-12 border-b border-r border-[#a8823a]/30 rounded-br-[16px]">
+               </div>
+               <div class="absolute top-4 right-4 w-12 h-12 border-t border-r border-[#a8823a]/30 rounded-tr-[16px]">
+               </div>
+               <div class="absolute bottom-4 left-4 w-12 h-12 border-b border-l border-[#a8823a]/30 rounded-bl-[16px]">
+               </div>
+
+               <h3 class="font-serif text-[36px] mb-8 text-[#a8823a] font-normal tracking-widest relative z-10">RSVP
+               </h3>
+
+               <!-- Dynamic Status Text -->
+               <div id="rsvp-text-container"
+                  class="transition-opacity duration-300 relative z-10 h-12 flex items-center justify-center">
+                  <p id="rsvp-status" class="text-[#4a4238] italic font-serif text-[16px]">Your response
+                     has been removed.</p>
+               </div>
+
+               <div class="w-12 h-px bg-[#a8823a]/30 mx-auto my-6 relative z-10"></div>
+
+               <p class="font-sans text-[10px] tracking-[0.3em] font-bold text-[#2d2822] uppercase mb-3 relative z-10">We
+                  hope to count on you</p>
+               <p
+                  class="font-sans text-[9px] tracking-[0.2em] text-[#a8823a] uppercase font-semibold mb-12 relative z-10">
+                  Please reply by May 15th, 2026</p>
+
+               <!-- Button -->
+               <button id="btn-rsvp"
+                  class="relative z-10 inline-flex items-center justify-center w-full max-w-[240px] py-[20px] bg-[#2d2822] text-[#FDFBF7] rounded-[14px] font-sans text-[11px] tracking-[0.3em] font-extrabold hover:shadow-[0_10px_20px_rgba(45,40,34,0.3)] hover:scale-105 transition-all duration-500 overflow-hidden group">
+                  <div
+                     class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                  </div>
+                  <span id="rsvp-icon" class="flex items-center mr-3 hidden relative z-10">
+                     <svg class="w-5 h-5 text-[#FDFBF7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7">
+                        </path>
+                     </svg>
+                  </span>
+                  <span id="rsvp-label" class="relative z-10 drop-shadow-sm">YES, IN SHA ALLAH</span>
+               </button>
+            </div>
          </section>
       </div>
    </div>
