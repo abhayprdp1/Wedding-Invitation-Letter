@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // High DPI Canvas Scaling Function
     const resizeCanvas = () => {
         if (!canvas) return;
-        const dpr = window.devicePixelRatio || 1;
+        // Clamp DPR to max 2 to prevent severe lag on high-DPI mobile devices (like iPhone 12/13/14/15 which are 3x)
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
         
         const container = canvas.parentElement;
         const width = container.clientWidth;
@@ -102,10 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const img = new Image();
+        // Set immediately to prevent duplicate loading requests in the animation loop
+        preloadedImages[index - 1] = img;
+        
         const frameNum = String(index).padStart(3, '0');
         
         img.onload = () => {
-            preloadedImages[index - 1] = img;
             if (index === 1 && !firstFrameLoaded) {
                 firstFrameLoaded = true;
                 extractBgColor(img);
@@ -171,8 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Unload older frames to free RAM and prevent crashing/hanging
                     for(let i = 0; i < currentFrame - 2; i++) {
                         if (preloadedImages[i]) {
-                            preloadedImages[i].src = ''; // Help GC
-                            preloadedImages[i] = null;
+                            preloadedImages[i].onload = null; // Clean up listeners
+                            preloadedImages[i] = null; // Help GC
                         }
                     }
 
@@ -239,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // 2. Countdown Logic
-    const weddingDate = new Date('May 21, 2026 12:00:00').getTime();
+    const weddingDate = new Date('May 31, 2026 10:30:00').getTime();
     
     const updateCountdown = () => {
         const now = new Date().getTime();
@@ -266,6 +269,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
+    // Pre-warm confetti canvas to prevent lag on first click
+    if (typeof confetti === 'function') {
+        confetti({ particleCount: 0 });
+    }
+
     // 3. RSVP Confetti & State Logic
     const btnRsvp = document.getElementById('btn-rsvp');
     const rsvpStatus = document.getElementById('rsvp-status');
@@ -278,8 +286,72 @@ document.addEventListener('DOMContentLoaded', () => {
         btnRsvp.addEventListener('click', () => {
             isAttending = !isAttending;
 
+            // Play a realistic Party Popper sound using Web Audio API
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) {
+                    const ctx = new AudioContext();
+                    
+                    if (isAttending) {
+                        // 1. The "Pop" (fast dropping pitch)
+                        const osc = ctx.createOscillator();
+                        const oscGain = ctx.createGain();
+                        osc.type = 'square';
+                        osc.frequency.setValueAtTime(800, ctx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.1);
+                        oscGain.gain.setValueAtTime(0.6, ctx.currentTime);
+                        oscGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                        osc.connect(oscGain);
+                        oscGain.connect(ctx.destination);
+                        osc.start(ctx.currentTime);
+                        osc.stop(ctx.currentTime + 0.1);
+
+                        // 2. The "Paper/Confetti Burst" (filtered white noise)
+                        const bufferSize = ctx.sampleRate * 0.25; // 0.25 seconds of noise
+                        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                        const data = buffer.getChannelData(0);
+                        for (let i = 0; i < bufferSize; i++) {
+                            data[i] = Math.random() * 2 - 1; // White noise
+                        }
+                        
+                        const noise = ctx.createBufferSource();
+                        noise.buffer = buffer;
+                        
+                        // Highpass filter for a crisp, snappy rustle
+                        const filter = ctx.createBiquadFilter();
+                        filter.type = 'highpass';
+                        filter.frequency.value = 2500;
+                        
+                        const noiseGain = ctx.createGain();
+                        noiseGain.gain.setValueAtTime(1, ctx.currentTime);
+                        noiseGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+                        
+                        noise.connect(filter);
+                        filter.connect(noiseGain);
+                        noiseGain.connect(ctx.destination);
+                        noise.start(ctx.currentTime);
+                        
+                    } else {
+                        // Soft descending pop for "Cancel"
+                        const osc = ctx.createOscillator();
+                        const gainNode = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(600, ctx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.1);
+                        gainNode.gain.setValueAtTime(0.5, ctx.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                        osc.connect(gainNode);
+                        gainNode.connect(ctx.destination);
+                        osc.start();
+                        osc.stop(ctx.currentTime + 0.1);
+                    }
+                }
+            } catch (e) {
+                console.warn("Audio playback failed", e);
+            }
+
             if (isAttending) {
-                // Trigger Confetti
+                // Trigger Confetti immediately
                 if (typeof confetti === 'function') {
                     const count = 200;
                     const defaults = {
@@ -307,25 +379,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 rsvpStatus.innerHTML = `Thank you! Your response has been recorded <span style="font-style: normal">💚</span>`;
                 
                 // Update Button to "Cancel Attendance" styled OUTLINE
-                btnRsvp.classList.remove('bg-white', 'text-wed-dark', 'shadow-lg', 'hover:bg-gray-50');
-                btnRsvp.classList.add('bg-transparent', 'text-white', 'border-white/50');
+                btnRsvp.classList.remove('bg-[#2d2822]', 'text-[#FDFBF7]', 'hover:shadow-[0_10px_20px_rgba(45,40,34,0.3)]');
+                btnRsvp.classList.add('bg-transparent', 'text-[#2d2822]', 'border-[1.5px]', 'border-[#2d2822]/40', 'hover:bg-[#2d2822]/5');
                 
-                rsvpIcon.innerHTML = `<svg class="w-[18px] h-[18px] text-white opacity-80 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
-                rsvpLabel.innerText = "Cancel Attendance";
-                rsvpLabel.classList.remove('text-[20px]');
-                rsvpLabel.classList.add('text-[18px]');
+                rsvpIcon.classList.remove('hidden');
+                rsvpIcon.innerHTML = `<svg class="w-[16px] h-[16px] text-[#2d2822] opacity-80 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+                rsvpLabel.innerText = "CANCEL ATTENDANCE";
+                rsvpLabel.classList.remove('tracking-[0.3em]');
+                rsvpLabel.classList.add('tracking-[0.15em]');
                 
             } else {
                 // Revert to original state
                 rsvpStatus.innerHTML = `Your response has been removed.`;
                 
-                btnRsvp.classList.add('bg-white', 'text-wed-dark', 'shadow-lg', 'hover:bg-gray-50');
-                btnRsvp.classList.remove('bg-transparent', 'text-white', 'border-white/50');
+                btnRsvp.classList.add('bg-[#2d2822]', 'text-[#FDFBF7]', 'hover:shadow-[0_10px_20px_rgba(45,40,34,0.3)]');
+                btnRsvp.classList.remove('bg-transparent', 'text-[#2d2822]', 'border-[1.5px]', 'border-[#2d2822]/40', 'hover:bg-[#2d2822]/5');
                 
-                rsvpIcon.innerHTML = `<svg class="w-[22px] h-[22px] text-wed-dark opacity-90 stroke-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
-                rsvpLabel.innerText = "Yes, In Sha Allah";
-                rsvpLabel.classList.add('text-[20px]');
-                rsvpLabel.classList.remove('text-[18px]');
+                rsvpIcon.classList.add('hidden');
+                rsvpLabel.innerText = "YES, IN SHA ALLAH";
+                rsvpLabel.classList.add('tracking-[0.3em]');
+                rsvpLabel.classList.remove('tracking-[0.15em]');
             }
         });
     }
