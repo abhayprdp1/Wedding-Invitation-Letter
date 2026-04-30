@@ -26,6 +26,15 @@
                   serif: ['Playfair Display', 'serif'],
                   sans: ['Inter', 'sans-serif'],
                   script: ['Great Vibes', 'cursive']
+               },
+               keyframes: {
+                  pendulum: {
+                     '0%, 100%': { transform: 'scale(1.05) rotate(-2deg)' },
+                     '50%': { transform: 'scale(1.05) rotate(2deg)' },
+                  }
+               },
+               animation: {
+                  pendulum: 'pendulum 8s ease-in-out infinite',
                }
             }
          }
@@ -39,26 +48,36 @@
    <div id="intro-overlay"
       class="fixed inset-0 bg-[#fbf9f4] z-50 flex justify-center transition-opacity duration-1000 ease-out">
       <div class="w-full bg-[#fbf9f4] h-full relative flex flex-col">
-         <div id="animation-container" class="relative w-full flex-grow flex justify-center items-center overflow-hidden">
+         <div id="animation-container"
+            class="relative w-full flex-grow flex justify-center items-center overflow-hidden">
             <canvas id="sequence-canvas" class="hidden absolute inset-0 w-full h-full z-10"></canvas>
-            
+
             <!-- Curtain Reveal Text -->
-            <div id="curtain-text" class="absolute inset-0 z-[15] flex flex-col justify-center items-center pointer-events-none opacity-0 transition-opacity duration-[1500ms] ease-out">
-               <h1 class="font-serif text-[48px] sm:text-[56px] text-[#2d2822] tracking-widest leading-[1.1] font-medium relative z-10 drop-shadow-[0_4px_10px_rgba(255,255,255,0.9)] text-center uppercase">
-                  Sapnam <br><span class="font-script text-[56px] text-[#a8823a] font-normal leading-none block my-3 lowercase drop-shadow-[0_2px_4px_rgba(168,130,58,0.3)]">&</span> Binshin
+            <div id="curtain-text"
+               class="absolute inset-0 z-[15] flex flex-col justify-center items-center pointer-events-none opacity-0 transition-opacity duration-[1500ms] ease-out">
+               <h1
+                  class="font-serif text-[48px] sm:text-[56px] text-[#2d2822] tracking-widest leading-[1.1] font-medium relative z-10 drop-shadow-[0_4px_10px_rgba(255,255,255,0.9)] text-center uppercase">
+                  Sapnam <br><span
+                     class="font-script text-[56px] text-[#a8823a] font-normal leading-none block my-3 lowercase drop-shadow-[0_2px_4px_rgba(168,130,58,0.3)]">&</span>
+                  Binshin
                </h1>
             </div>
 
             <!-- Mobile Responsive UI Overlay -->
-            <div id="intro-ui" class="absolute inset-0 z-20 flex flex-col justify-end pb-24 items-center pointer-events-none transition-opacity duration-500">
+            <div id="intro-ui"
+               class="absolute inset-0 z-20 flex flex-col justify-end pb-24 items-center pointer-events-none transition-opacity duration-500">
 
                <div class="text-center flex flex-col items-center">
                   <div class="w-px h-16 bg-gradient-to-b from-transparent via-[#a8823a]/50 to-[#a8823a] mb-6"></div>
-                  <p class="font-script text-[42px] font-medium text-[#a8823a] mb-6 drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)]" style="text-shadow: 0 2px 4px rgba(168,130,58,0.2);">Reveal Invitation</p>
-                  <div id="btn-enter" class="w-14 h-14 rounded-full border-[1px] border-[#a8823a]/60 flex items-center justify-center animate-[bounce_3s_infinite] bg-white/60 backdrop-blur-md shadow-[0_10px_30px_rgba(168,130,58,0.2)] hover:scale-110 transition-transform duration-500 cursor-pointer pointer-events-auto">
-                     <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#ebd498] to-[#a8823a] flex items-center justify-center shadow-[0_2px_10px_rgba(168,130,58,0.4)]">
+                  <p class="font-script text-[42px] font-medium text-[#a8823a] mb-6 drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)]"
+                     style="text-shadow: 0 2px 4px rgba(168,130,58,0.2);">Reveal Invitation</p>
+                  <div id="btn-enter"
+                     class="w-14 h-14 rounded-full border-[1px] border-[#a8823a]/60 flex items-center justify-center animate-[bounce_3s_infinite] bg-white/60 backdrop-blur-md shadow-[0_10px_30px_rgba(168,130,58,0.2)] hover:scale-110 transition-transform duration-500 cursor-pointer pointer-events-auto">
+                     <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-[#ebd498] to-[#a8823a] flex items-center justify-center shadow-[0_2px_10px_rgba(168,130,58,0.4)]">
                         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                              d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                         </svg>
                      </div>
                   </div>
@@ -75,45 +94,59 @@
          class="max-w-md mx-auto bg-[#FDFBF7] min-h-full shadow-[0_0_50px_rgba(0,0,0,0.1)] relative border-x border-wed-gold/30 font-sans text-[#2d2822]">
 
          <!-- Cinematic Hero Section -->
-         <section class="relative h-screen flex flex-col justify-between overflow-hidden">
-            <img src="assets/3.jpg" alt="Couple Detail"
-               class="absolute inset-0 w-full h-full object-cover object-top">
+         <section
+            class="relative h-screen w-full overflow-hidden">
+            <img src="assets/1.jpg" alt="Couple Detail"
+               class="absolute inset-0 w-full h-full object-cover object-center scale-[1.02]">
 
-            <!-- Bismillah Header Glowing -->
-            <div class="relative top-0 left-0 right-0 pt-16 text-center z-10 animate-float">
-               <div class="w-px h-12 bg-gradient-to-b from-transparent to-wed-gold mx-auto mb-6"></div>
-               <p
-                  class="font-serif text-[56px] text-[#a8823a] mb-2 mt-4 leading-none drop-shadow-sm">
-                  ﷽</p>
-               <p class="font-serif text-[10px] tracking-[0.25em] text-[#4a4238] italic uppercase font-medium">In the
-                  name of Allah<br>The Most Gracious, The Most Merciful</p>
-            </div>
+            <!-- Elegant Bottom Gradient overlay to ensure text readability -->
+            <div class="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-[#fdfbf7] via-[#fdfbf7]/90 to-transparent pointer-events-none"></div>
 
-            <!-- Majestic Names Container -->
-            <div class="absolute inset-0 flex flex-col items-center justify-center z-10 -translate-y-8 reveal-element px-8 pointer-events-none">
-               <div class="relative flex flex-col items-center w-full max-w-sm">
-                  <p class="text-[10px] tracking-[0.6em] font-bold text-[#a8823a] mb-6 uppercase drop-shadow-[0_2px_4px_rgba(255,255,255,0.8)]">We are getting married</p>
-                  
-                  <h1 class="font-serif text-[44px] tracking-[0.25em] text-[#2d2822] leading-none font-medium uppercase relative z-10 drop-shadow-[0_4px_10px_rgba(255,255,255,0.9)]">
-                     Sapna
+            <div
+               class="absolute inset-0 flex flex-col items-center justify-end pb-12 z-10 reveal-element px-8 pointer-events-none">
+               <!-- Bismillah Header Glowing -->
+               <div class="text-center z-10 animate-float mb-6">
+                  <div class="w-px h-8 bg-gradient-to-b from-transparent to-wed-gold mx-auto mb-4"></div>
+                  <p class="font-serif text-[42px] text-[#a8823a] mb-2 leading-none drop-shadow-sm">﷽</p>
+                  <p class="font-serif text-[9px] tracking-[0.25em] text-[#4a4238] italic uppercase font-medium">In the
+                     name of Allah<br>The Most Gracious, The Most Merciful</p>
+               </div>
+
+               <!-- Majestic Names Container -->
+               <div class="relative flex flex-col items-center w-full max-w-sm bg-white/40 backdrop-blur-md rounded-[32px] p-8 shadow-[0_20px_50px_rgba(168,130,58,0.15)] border border-white/60">
+                  <p
+                     class="text-[9px] tracking-[0.6em] font-bold text-[#a8823a] mb-4 uppercase drop-shadow-[0_2px_4px_rgba(255,255,255,0.8)]">
+                     We are getting married</p>
+
+                  <h1
+                     class="font-serif text-[36px] tracking-[0.25em] text-[#2d2822] leading-none font-medium uppercase relative z-10 drop-shadow-[0_4px_10px_rgba(255,255,255,0.9)]">
+                     Sapnam
                   </h1>
-                  
-                  <div class="my-6 relative flex items-center justify-center w-full z-10">
-                     <div class="w-16 h-px bg-gradient-to-r from-transparent via-[#a8823a] to-transparent"></div>
-                     <span class="font-script text-[54px] text-[#a8823a] mx-6 leading-none drop-shadow-md" style="text-shadow: 0 2px 4px rgba(168,130,58,0.2);">&amp;</span>
-                     <div class="w-16 h-px bg-gradient-to-r from-transparent via-[#a8823a] to-transparent"></div>
+
+                  <div class="my-4 relative flex items-center justify-center w-full z-10">
+                     <div class="w-12 h-px bg-gradient-to-r from-transparent via-[#a8823a] to-transparent"></div>
+                     <span class="font-script text-[42px] text-[#a8823a] mx-4 leading-none drop-shadow-md"
+                        style="text-shadow: 0 2px 4px rgba(168,130,58,0.2);">&amp;</span>
+                     <div class="w-12 h-px bg-gradient-to-r from-transparent via-[#a8823a] to-transparent"></div>
                   </div>
-                  
-                  <h1 class="font-serif text-[44px] tracking-[0.25em] text-[#2d2822] leading-none font-medium uppercase relative z-10 drop-shadow-[0_4px_10px_rgba(255,255,255,0.9)]">
+
+                  <h1
+                     class="font-serif text-[36px] tracking-[0.25em] text-[#2d2822] leading-none font-medium uppercase relative z-10 drop-shadow-[0_4px_10px_rgba(255,255,255,0.9)]">
                      Binshin
                   </h1>
                </div>
             </div>
          </section>
          <!-- Section 4.jpg Wrapper: Countdown & Location -->
-         <div class="relative w-full py-16 overflow-hidden">
-            <img src="assets/4.jpg" alt="Theme Background" class="absolute inset-0 w-full h-full object-cover">
-            
+         <div class="relative w-full py-16 overflow-hidden bg-gradient-to-tr from-[#fdfbf7] via-[#f5eed9] to-[#ebd498]">
+            <!-- Decorative golden accents -->
+            <div class="absolute top-1/2 left-0 w-48 h-48 bg-white/50 rounded-full blur-[60px] -translate-y-1/2"></div>
+            <div class="absolute top-1/2 right-0 w-48 h-48 bg-[#a8823a]/20 rounded-full blur-[60px] -translate-y-1/2">
+            </div>
+            <div class="absolute inset-0 opacity-10"
+               style="background-image: radial-gradient(#d2ad52 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+
             <div class="relative z-10">
                <!-- Immersive Glass Countdown Section -->
                <section class="px-6 text-center reveal-element relative mb-24">
@@ -124,45 +157,65 @@
 
                   <div class="flex items-center justify-center gap-4 mb-6">
                      <div class="w-16 h-[1px] bg-gradient-to-r from-transparent to-[#a8823a]/50"></div>
-                     <h3 class="font-serif text-[26px] text-[#a8823a] font-normal tracking-wide italic">The Countdown</h3>
+                     <h3 class="font-serif text-[26px] text-[#a8823a] font-normal tracking-wide italic">The Countdown
+                     </h3>
                      <div class="w-16 h-[1px] bg-gradient-to-l from-transparent to-[#a8823a]/50"></div>
                   </div>
-                  <p class="text-[8px] tracking-[0.3em] uppercase text-[#4a4238] mb-10 font-bold">We can't wait until this moment!</p>
+                  <p class="text-[8px] tracking-[0.3em] uppercase text-[#4a4238] mb-10 font-bold">We can't wait until
+                     this moment!</p>
 
                   <!-- Scratch Card Feature -->
-                  <div class="relative w-[280px] h-[100px] mx-auto mb-10 rounded-[20px] overflow-hidden shadow-[0_10px_30px_rgba(168,130,58,0.2)] border-2 border-[#a8823a]/30">
+                  <div
+                     class="relative w-[280px] h-[100px] mx-auto mb-10 rounded-[20px] overflow-hidden shadow-[0_10px_30px_rgba(168,130,58,0.2)] border-2 border-[#a8823a]/30">
                      <!-- Hidden Date Layer -->
-                     <div class="absolute inset-0 bg-gradient-to-br from-[#fdfbf7] to-[#f5eed9] flex flex-col items-center justify-center">
-                        <span class="text-[10px] uppercase tracking-[0.3em] font-bold text-[#a8823a] mb-2 drop-shadow-sm">The Big Day</span>
-                        <h4 class="font-serif text-[36px] text-[#2d2822] font-medium leading-none drop-shadow-md">21/05/2026</h4>
+                     <div
+                        class="absolute inset-0 bg-gradient-to-br from-[#fdfbf7] to-[#f5eed9] flex flex-col items-center justify-center">
+                        <span
+                           class="text-[10px] uppercase tracking-[0.3em] font-bold text-[#a8823a] mb-2 drop-shadow-sm">The
+                           Big Day</span>
+                        <h4 class="font-serif text-[36px] text-[#2d2822] font-medium leading-none drop-shadow-md">
+                           21/05/2026</h4>
                      </div>
                      <!-- Scratch Canvas Overlay -->
-                     <canvas id="scratch-canvas" class="absolute inset-0 z-10 cursor-pointer touch-none transition-opacity duration-700"></canvas>
+                     <canvas id="scratch-canvas"
+                        class="absolute inset-0 z-10 cursor-pointer touch-none transition-opacity duration-700"></canvas>
                   </div>
 
                   <div class="flex justify-center items-center gap-3 sm:gap-4 max-w-[340px] mx-auto animate-float">
                      <div
                         class="w-[72px] h-[86px] rounded-[16px] backdrop-blur-md bg-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center relative overflow-hidden border border-[#a8823a]/20 group hover:border-[#a8823a]/50 transition-colors duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-br from-[#a8823a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <span id="days" class="text-[28px] font-serif text-[#a8823a] leading-none mb-2 font-medium">00</span>
+                        <div
+                           class="absolute inset-0 bg-gradient-to-br from-[#a8823a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <span id="days"
+                           class="text-[28px] font-serif text-[#a8823a] leading-none mb-2 font-medium">00</span>
                         <span class="text-[8px] uppercase tracking-[0.2em] text-[#4a4238] font-bold">Days</span>
                      </div>
                      <div
                         class="w-[72px] h-[86px] rounded-[16px] backdrop-blur-md bg-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center relative overflow-hidden border border-[#a8823a]/20 group hover:border-[#a8823a]/50 transition-colors duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-br from-[#a8823a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <span id="hours" class="text-[28px] font-serif text-[#a8823a] leading-none mb-2 font-medium">00</span>
+                        <div
+                           class="absolute inset-0 bg-gradient-to-br from-[#a8823a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <span id="hours"
+                           class="text-[28px] font-serif text-[#a8823a] leading-none mb-2 font-medium">00</span>
                         <span class="text-[8px] uppercase tracking-[0.2em] text-[#4a4238] font-bold">Hours</span>
                      </div>
                      <div
                         class="w-[72px] h-[86px] rounded-[16px] backdrop-blur-md bg-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center relative overflow-hidden border border-[#a8823a]/20 group hover:border-[#a8823a]/50 transition-colors duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-br from-[#a8823a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <span id="minutes" class="text-[28px] font-serif text-[#a8823a] leading-none mb-2 font-medium">00</span>
+                        <div
+                           class="absolute inset-0 bg-gradient-to-br from-[#a8823a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <span id="minutes"
+                           class="text-[28px] font-serif text-[#a8823a] leading-none mb-2 font-medium">00</span>
                         <span class="text-[8px] uppercase tracking-[0.2em] text-[#4a4238] font-bold">Mins</span>
                      </div>
                      <div
                         class="w-[72px] h-[86px] rounded-[16px] backdrop-blur-md bg-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center relative overflow-hidden border border-[#a8823a]/20 group hover:border-[#a8823a]/50 transition-colors duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-br from-[#a8823a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <span id="seconds" class="text-[28px] font-serif text-[#a8823a] leading-none mb-2 font-medium">00</span>
+                        <div
+                           class="absolute inset-0 bg-gradient-to-br from-[#a8823a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <span id="seconds"
+                           class="text-[28px] font-serif text-[#a8823a] leading-none mb-2 font-medium">00</span>
                         <span class="text-[8px] uppercase tracking-[0.2em] text-[#4a4238] font-bold">Secs</span>
                      </div>
                   </div>
@@ -176,63 +229,87 @@
                   <div
                      class="relative w-full h-52 rounded-[24px] mb-10 p-[2px] bg-gradient-to-b from-[#a8823a]/40 to-transparent shadow-[0_15px_40px_rgba(0,0,0,0.1)] mx-auto max-w-[320px] overflow-hidden group">
                      <div class="absolute inset-0 bg-white/80 backdrop-blur-sm rounded-[22px]"></div>
-                     <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#d2ad52 1px, transparent 1px); background-size: 14px 14px;"></div>
-                     <div class="w-full h-full rounded-[22px] flex flex-col items-center justify-center relative z-10 p-6 backdrop-blur-sm border border-white/50">
-                        <div class="w-12 h-12 rounded-full bg-[#a8823a]/10 flex items-center justify-center mb-4 border border-[#a8823a]/30 shadow-[0_0_15px_rgba(210,173,82,0.15)] group-hover:scale-110 transition-transform duration-500">
+                     <div class="absolute inset-0 opacity-20"
+                        style="background-image: radial-gradient(#d2ad52 1px, transparent 1px); background-size: 14px 14px;">
+                     </div>
+                     <div
+                        class="w-full h-full rounded-[22px] flex flex-col items-center justify-center relative z-10 p-6 backdrop-blur-sm border border-white/50">
+                        <div
+                           class="w-12 h-12 rounded-full bg-[#a8823a]/10 flex items-center justify-center mb-4 border border-[#a8823a]/30 shadow-[0_0_15px_rgba(210,173,82,0.15)] group-hover:scale-110 transition-transform duration-500">
                            <svg class="w-6 h-6 text-[#a8823a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path>
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                 d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z">
+                              </path>
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                            </svg>
                         </div>
-                        <span class="text-[#a8823a] text-[10px] tracking-[0.1em] uppercase font-bold text-center leading-relaxed">Hina Convention Centre Map</span>
+                        <span
+                           class="text-[#a8823a] text-[10px] tracking-[0.1em] uppercase font-bold text-center leading-relaxed">Hina
+                           Convention Centre Map</span>
                      </div>
                   </div>
 
-                  <h4 class="font-sans text-[14px] text-[#2d2822] font-bold mb-2 tracking-[0.2em] uppercase">Hina Convention Centre</h4>
-                  <p class="text-[#4a4238] text-[9px] leading-relaxed uppercase tracking-[0.2em] mx-auto max-w-[220px] mb-8 font-semibold">Join us to celebrate our joyous moments, In Sha Allah.</p>
+                  <h4 class="font-sans text-[14px] text-[#2d2822] font-bold mb-2 tracking-[0.2em] uppercase">Hina
+                     Convention Centre</h4>
+                  <p
+                     class="text-[#4a4238] text-[9px] leading-relaxed uppercase tracking-[0.2em] mx-auto max-w-[220px] mb-8 font-semibold">
+                     Join us to celebrate our joyous moments, In Sha Allah.</p>
 
-                  <a href="https://maps.app.goo.gl/B9LnwQz77HHKauRD8" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full max-w-[280px] py-[18px] bg-gradient-to-r from-[#d2ad52] via-[#fcf6ba] to-[#d2ad52] text-[#2d2822] rounded-full font-sans text-[11px] tracking-[0.25em] font-extrabold hover:shadow-[0_0_30px_rgba(210,173,82,0.4)] hover:scale-105 transition-all duration-300">
+                  <a href="https://maps.app.goo.gl/B9LnwQz77HHKauRD8" target="_blank" rel="noopener noreferrer"
+                     class="inline-flex items-center justify-center w-full max-w-[280px] py-[18px] bg-gradient-to-r from-[#d2ad52] via-[#fcf6ba] to-[#d2ad52] text-[#2d2822] rounded-full font-sans text-[11px] tracking-[0.25em] font-extrabold hover:shadow-[0_0_30px_rgba(210,173,82,0.4)] hover:scale-105 transition-all duration-300">
                      GET DIRECTIONS
                   </a>
-               </section>  
-         </section>
+               </section>
+               </section>
 
             </div> <!-- End 4.jpg z-10 content -->
          </div> <!-- End 4.jpg wrapper -->
 
          <!-- Schedule Section Frame (5.jpg) -->
-         <div class="px-6 py-16 w-full flex items-center justify-center relative z-10 bg-gradient-to-br from-[#fdfbf7] via-[#f5eed9] to-[#ebd498] overflow-hidden">
+         <div
+            class="px-6 py-16 w-full flex items-center justify-center relative z-10 bg-gradient-to-br from-[#fdfbf7] via-[#f5eed9] to-[#ebd498] overflow-hidden">
             <!-- Decorative golden accents -->
             <div class="absolute top-0 right-0 w-64 h-64 bg-white/50 rounded-full blur-[80px]"></div>
             <div class="absolute bottom-0 left-0 w-64 h-64 bg-[#a8823a]/20 rounded-full blur-[80px]"></div>
-            <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#d2ad52 1px, transparent 1px); background-size: 20px 20px;"></div>
-            
-            <div class="relative w-full max-w-[400px] rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(168,130,58,0.2)] border border-[#a8823a]/20 z-10">
-               <!-- The requested 5.jpg background JUST for timings -->
-               <img src="assets/5.jpg" alt="Timings Background" class="absolute inset-0 w-full h-full object-cover">
-               <!-- Subtle overlay to make text readable over the background -->
-               <div class="absolute inset-0 bg-white/40 backdrop-blur-[2px]"></div>
+            <div class="absolute inset-0 opacity-10 pointer-events-none"
+               style="background-image: radial-gradient(#d2ad52 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
 
+            <div
+               class="relative w-full max-w-[400px] rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(168,130,58,0.2)] border border-[#a8823a]/20 z-10 bg-white/60 backdrop-blur-md">
                <section class="relative z-10 py-16 text-center">
-                  <h3 class="font-serif text-[30px] mb-12 text-[#2d2822] font-medium tracking-wide drop-shadow-sm">Timings</h3>
+                  <h3 class="font-serif text-[30px] mb-12 text-[#2d2822] font-medium tracking-wide drop-shadow-sm">
+                     Timings</h3>
                   <div class="space-y-8 text-left max-w-[300px] mx-auto relative px-4">
                      <!-- Vertical gold gradient line -->
-                     <div class="absolute left-[38px] top-4 bottom-4 w-[2px] bg-gradient-to-b from-[#a8823a]/80 via-[#a8823a]/20 to-[#a8823a]/80 rounded-full"></div>
+                     <div
+                        class="absolute left-[38px] top-4 bottom-4 w-[2px] bg-gradient-to-b from-[#a8823a]/80 via-[#a8823a]/20 to-[#a8823a]/80 rounded-full">
+                     </div>
                      <!-- Event Row 1 -->
                      <div class="flex items-center relative z-10 group cursor-default">
-                        <span class="text-[12px] text-[#2d2822] font-bold tracking-widest w-[44px] py-1 pr-3 text-right">10:00</span>
-                        <div class="w-3 h-3 rounded-full border-2 border-white bg-[#a8823a] flex-shrink-0 group-hover:scale-125 transition-transform shadow-[0_2px_5px_rgba(0,0,0,0.1)]"></div>
-                        <div class="pl-8 w-full flex justify-between items-center py-2 transition-transform group-hover:translate-x-2">
+                        <span
+                           class="text-[12px] text-[#2d2822] font-bold tracking-widest w-[44px] py-1 pr-3 text-right">10:00</span>
+                        <div
+                           class="w-3 h-3 rounded-full border-2 border-white bg-[#a8823a] flex-shrink-0 group-hover:scale-125 transition-transform shadow-[0_2px_5px_rgba(0,0,0,0.1)]">
+                        </div>
+                        <div
+                           class="pl-8 w-full flex justify-between items-center py-2 transition-transform group-hover:translate-x-2">
                            <span class="text-[18px] text-[#2d2822] font-serif tracking-wide drop-shadow-sm">Nikah</span>
                            <span class="text-[9px] text-[#4a4238] uppercase font-bold tracking-[0.2em]">Ceremony</span>
                         </div>
                      </div>
                      <!-- Event Row 2 -->
                      <div class="flex items-center relative z-10 group cursor-default">
-                        <span class="text-[12px] text-[#2d2822] font-bold tracking-widest w-[44px] py-1 pr-3 text-right">12:00</span>
-                        <div class="w-3 h-3 rounded-full border-2 border-white bg-[#a8823a] flex-shrink-0 group-hover:scale-125 transition-transform shadow-[0_2px_5px_rgba(0,0,0,0.1)]"></div>
-                        <div class="pl-8 w-full flex justify-between items-center py-2 transition-transform group-hover:translate-x-2">
-                           <span class="text-[18px] text-[#2d2822] font-serif tracking-wide drop-shadow-sm">Walima</span>
+                        <span
+                           class="text-[12px] text-[#2d2822] font-bold tracking-widest w-[44px] py-1 pr-3 text-right">12:00</span>
+                        <div
+                           class="w-3 h-3 rounded-full border-2 border-white bg-[#a8823a] flex-shrink-0 group-hover:scale-125 transition-transform shadow-[0_2px_5px_rgba(0,0,0,0.1)]">
+                        </div>
+                        <div
+                           class="pl-8 w-full flex justify-between items-center py-2 transition-transform group-hover:translate-x-2">
+                           <span
+                              class="text-[18px] text-[#2d2822] font-serif tracking-wide drop-shadow-sm">Walima</span>
                            <span class="text-[9px] text-[#4a4238] uppercase font-bold tracking-[0.2em]">Reception</span>
                         </div>
                      </div>
@@ -246,33 +323,43 @@
             <!-- Decorative golden accents -->
             <div class="absolute top-0 left-0 w-64 h-64 bg-white/40 rounded-full blur-[80px]"></div>
             <div class="absolute bottom-0 right-0 w-64 h-64 bg-[#a8823a]/20 rounded-full blur-[80px]"></div>
-            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#d2ad52 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <div class="absolute inset-0 opacity-10"
+               style="background-image: radial-gradient(#d2ad52 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
 
             <section class="relative z-10 px-0 text-center reveal-element w-full overflow-hidden">
-               <h3 class="font-script text-[48px] leading-[1.2] mb-1 text-[#a8823a] font-normal drop-shadow-md px-8" style="text-shadow: 0 2px 5px rgba(168,130,58,0.2);">Captured Moments</h3>
-               <p class="font-sans text-[10px] tracking-[0.3em] font-medium text-[#4a4238] mb-10 uppercase drop-shadow-sm px-8">
+               <h3 class="font-script text-[48px] leading-[1.2] mb-1 text-[#a8823a] font-normal drop-shadow-md px-8"
+                  style="text-shadow: 0 2px 5px rgba(168,130,58,0.2);">Captured Moments</h3>
+               <p
+                  class="font-sans text-[10px] tracking-[0.3em] font-medium text-[#4a4238] mb-10 uppercase drop-shadow-sm px-8">
                   Our Beautiful Memories</p>
 
                <!-- Horizontal Scrolling Gallery -->
-               <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 px-8 pb-10" style="scrollbar-width: none; -ms-overflow-style: none;">
+               <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 px-8 pb-10"
+                  style="scrollbar-width: none; -ms-overflow-style: none;">
                   <!-- Gallery Item 0 -->
-                  <div class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
+                  <div
+                     class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
                      <img src="assets/1.jpg" alt="Gallery 0" class="absolute inset-0 w-full h-full object-cover">
                   </div>
                   <!-- Gallery Item 1 -->
-                  <div class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
+                  <div
+                     class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
                      <img src="assets/2.jpg" alt="Gallery 1" class="absolute inset-0 w-full h-full object-cover">
                   </div>
                   <!-- Gallery Item 2 -->
-                  <div class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
+                  <div
+                     class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
                      <img src="assets/10.jpg" alt="Gallery 2" class="absolute inset-0 w-full h-full object-cover">
                   </div>
                   <!-- Gallery Item 3 -->
-                  <div class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
+                  <div
+                     class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
                      <img src="assets/11.jpg" alt="Gallery 3" class="absolute inset-0 w-full h-full object-cover">
                   </div>
                   <!-- Gallery Item 4 -->
-                  <div class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
+                  <div
+                     class="snap-center shrink-0 w-[280px] h-[380px] rounded-[24px] overflow-hidden shadow-[0_15px_35px_rgba(168,130,58,0.2)] relative border-[6px] border-white bg-[#fbf9f4]">
                      <img src="assets/12.jpg" alt="Gallery 4" class="absolute inset-0 w-full h-full object-cover">
                   </div>
                   <!-- Invisible spacer to allow last item to snap to center cleanly -->
@@ -282,22 +369,27 @@
                <!-- Swipe Indicator -->
                <div class="flex justify-center items-center gap-3 mt-2 opacity-80 animate-pulse">
                   <svg class="w-4 h-4 text-[#a8823a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                   </svg>
                   <span class="text-[9px] uppercase tracking-[0.2em] text-[#4a4238] font-bold">Swipe to view</span>
                   <svg class="w-4 h-4 text-[#a8823a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">
+                     </path>
                   </svg>
                </div>
             </section>
          </div>
 
          <!-- RSVP Section - Ultimate Luxury Card -->
-         <section class="px-6 text-center reveal-element pb-20 pt-12 relative w-full bg-gradient-to-tr from-[#fdfbf7] via-[#f5eed9] to-[#ebd498] overflow-hidden">
+         <section
+            class="px-6 text-center reveal-element pb-20 pt-12 relative w-full bg-gradient-to-tr from-[#fdfbf7] via-[#f5eed9] to-[#ebd498] overflow-hidden">
             <!-- Decorative golden accents -->
             <div class="absolute top-0 right-0 w-64 h-64 bg-white/50 rounded-full blur-[80px]"></div>
             <div class="absolute bottom-0 left-0 w-64 h-64 bg-[#a8823a]/20 rounded-full blur-[80px]"></div>
-            <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#d2ad52 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <div class="absolute inset-0 opacity-10 pointer-events-none"
+               style="background-image: radial-gradient(#d2ad52 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
 
             <div
                class="bg-white/70 backdrop-blur-md p-10 pt-12 rounded-[32px] border border-[#a8823a]/30 relative shadow-[0_20px_50px_rgba(168,130,58,0.2)] overflow-hidden mx-auto max-w-md z-10">
@@ -326,7 +418,8 @@
 
                <div class="w-12 h-px bg-[#a8823a]/30 mx-auto my-6 relative z-10"></div>
 
-               <p class="font-sans text-[10px] tracking-[0.3em] font-bold text-[#2d2822] uppercase mb-3 relative z-10">We
+               <p class="font-sans text-[10px] tracking-[0.3em] font-bold text-[#2d2822] uppercase mb-3 relative z-10">
+                  We
                   hope to count on you</p>
                <p
                   class="font-sans text-[9px] tracking-[0.2em] text-[#a8823a] uppercase font-semibold mb-12 relative z-10">
