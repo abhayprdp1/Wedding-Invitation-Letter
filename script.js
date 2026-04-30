@@ -269,11 +269,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Pre-warm confetti canvas to prevent lag on first click
-    if (typeof confetti === 'function') {
-        confetti({ particleCount: 0 });
-    }
-
     // 3. RSVP Confetti & State Logic
     const btnRsvp = document.getElementById('btn-rsvp');
     const rsvpStatus = document.getElementById('rsvp-status');
@@ -281,6 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const rsvpLabel = document.getElementById('rsvp-label');
 
     let isAttending = false;
+    let audioCtx = null; // Store globally to prevent hardware context limit crashes on mobile
 
     if (btnRsvp) {
         btnRsvp.addEventListener('click', () => {
@@ -288,62 +284,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Play a realistic Party Popper sound using Web Audio API
             try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (AudioContext) {
-                    const ctx = new AudioContext();
+                if (!audioCtx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) {
+                        audioCtx = new AudioContext();
+                    }
+                }
+                
+                if (audioCtx) {
+                    if (audioCtx.state === 'suspended') {
+                        audioCtx.resume();
+                    }
                     
                     if (isAttending) {
                         // 1. The "Pop" (fast dropping pitch)
-                        const osc = ctx.createOscillator();
-                        const oscGain = ctx.createGain();
+                        const osc = audioCtx.createOscillator();
+                        const oscGain = audioCtx.createGain();
                         osc.type = 'square';
-                        osc.frequency.setValueAtTime(800, ctx.currentTime);
-                        osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.1);
-                        oscGain.gain.setValueAtTime(0.6, ctx.currentTime);
-                        oscGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1);
+                        oscGain.gain.setValueAtTime(0.6, audioCtx.currentTime);
+                        oscGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
                         osc.connect(oscGain);
-                        oscGain.connect(ctx.destination);
-                        osc.start(ctx.currentTime);
-                        osc.stop(ctx.currentTime + 0.1);
+                        oscGain.connect(audioCtx.destination);
+                        osc.start(audioCtx.currentTime);
+                        osc.stop(audioCtx.currentTime + 0.1);
 
                         // 2. The "Paper/Confetti Burst" (filtered white noise)
-                        const bufferSize = ctx.sampleRate * 0.25; // 0.25 seconds of noise
-                        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                        const bufferSize = Math.floor(audioCtx.sampleRate * 0.25); // 0.25 seconds of noise
+                        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
                         const data = buffer.getChannelData(0);
                         for (let i = 0; i < bufferSize; i++) {
                             data[i] = Math.random() * 2 - 1; // White noise
                         }
                         
-                        const noise = ctx.createBufferSource();
+                        const noise = audioCtx.createBufferSource();
                         noise.buffer = buffer;
                         
                         // Highpass filter for a crisp, snappy rustle
-                        const filter = ctx.createBiquadFilter();
+                        const filter = audioCtx.createBiquadFilter();
                         filter.type = 'highpass';
                         filter.frequency.value = 2500;
                         
-                        const noiseGain = ctx.createGain();
-                        noiseGain.gain.setValueAtTime(1, ctx.currentTime);
-                        noiseGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+                        const noiseGain = audioCtx.createGain();
+                        noiseGain.gain.setValueAtTime(1, audioCtx.currentTime);
+                        noiseGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
                         
                         noise.connect(filter);
                         filter.connect(noiseGain);
-                        noiseGain.connect(ctx.destination);
-                        noise.start(ctx.currentTime);
+                        noiseGain.connect(audioCtx.destination);
+                        noise.start(audioCtx.currentTime);
                         
                     } else {
                         // Soft descending pop for "Cancel"
-                        const osc = ctx.createOscillator();
-                        const gainNode = ctx.createGain();
+                        const osc = audioCtx.createOscillator();
+                        const gainNode = audioCtx.createGain();
                         osc.type = 'sine';
-                        osc.frequency.setValueAtTime(600, ctx.currentTime);
-                        osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.1);
-                        gainNode.gain.setValueAtTime(0.5, ctx.currentTime);
-                        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
+                        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
                         osc.connect(gainNode);
-                        gainNode.connect(ctx.destination);
-                        osc.start();
-                        osc.stop(ctx.currentTime + 0.1);
+                        gainNode.connect(audioCtx.destination);
+                        osc.start(audioCtx.currentTime);
+                        osc.stop(audioCtx.currentTime + 0.1);
                     }
                 }
             } catch (e) {
