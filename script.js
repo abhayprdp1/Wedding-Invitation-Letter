@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalFrames = 240;
     const frameBaseName = 'new frame optimized/ezgif-frame-';
     const frameExt = '.webp';
-    const images = [];
+    const images = []; // kept for legacy compatibility if needed
     let isPlaying = false;
     
     // High DPI Canvas Scaling Function
@@ -89,42 +89,40 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillRect(cornerX - patchSize, cornerY - patchSize, patchSize, patchSize);
     };
     
-    // Preload images with controlled concurrency to prevent browser hang
-    let loadedCount = 0;
-    const concurrency = 4;
-    let nextIndexToLoad = 1;
+    // Preload images efficiently with a sliding window buffer to prevent browser hang
+    const preloadedImages = new Array(totalFrames).fill(null);
+    let firstFrameLoaded = false;
+    const preloadBuffer = 15; // Number of frames to keep loaded ahead
     
-    const loadNextConcurrent = () => {
-        if (nextIndexToLoad > totalFrames) return;
-        const index = nextIndexToLoad++;
+    const loadFrame = (index, callback) => {
+        if (index > totalFrames || index < 1) return;
+        if (preloadedImages[index - 1]) {
+            if (callback) callback(preloadedImages[index - 1]);
+            return;
+        }
         
         const img = new Image();
         const frameNum = String(index).padStart(3, '0');
         
         img.onload = () => {
-            if (index === 1) {
+            preloadedImages[index - 1] = img;
+            if (index === 1 && !firstFrameLoaded) {
+                firstFrameLoaded = true;
                 extractBgColor(img);
                 canvas.style.display = 'block';
                 canvas.style.cursor = 'pointer';
                 resizeCanvas();
                 drawFrameOnCanvas(img);
             }
-            images[index - 1] = img;
-            loadedCount++;
-            
-            // Load the next image
-            loadNextConcurrent();
-        };
-        img.onerror = () => {
-            loadNextConcurrent();
+            if (callback) callback(img);
         };
         
         img.src = `${frameBaseName}${frameNum}${frameExt}`;
     };
 
-    // Kick off the loading queues
-    for (let i = 0; i < concurrency; i++) {
-        loadNextConcurrent();
+    // Kick off the initial buffer loading
+    for (let i = 1; i <= preloadBuffer; i++) {
+        loadFrame(i);
     }
 
     if (canvas) {
@@ -162,9 +160,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Use requestAnimationFrame but clamp it to our target FPS
                 if (deltaTime >= frameDuration) {
+                    // Preload next batch of frames dynamically
+                    for(let i = 1; i <= preloadBuffer; i++) {
+                        let f = currentFrame + i + 1;
+                        if (f <= totalFrames && !preloadedImages[f - 1]) {
+                            loadFrame(f);
+                        }
+                    }
+                    
+                    // Unload older frames to free RAM and prevent crashing/hanging
+                    for(let i = 0; i < currentFrame - 2; i++) {
+                        if (preloadedImages[i]) {
+                            preloadedImages[i].src = ''; // Help GC
+                            preloadedImages[i] = null;
+                        }
+                    }
+
                     // Only draw if the image has finished loading
-                    if (images[currentFrame] && images[currentFrame].complete) {
-                        drawFrameOnCanvas(images[currentFrame]);
+                    if (preloadedImages[currentFrame] && preloadedImages[currentFrame].complete) {
+                        drawFrameOnCanvas(preloadedImages[currentFrame]);
                         
                         // Fade in the text after the second curtain opens (around 80% through the animation)
                         if (currentFrame === Math.floor(totalFrames * 0.80)) {
@@ -196,8 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => {
         if(canvas && introOverlay.style.display !== 'none') {
              resizeCanvas();
-             if (!isPlaying && images[0] && images[0].complete) {
-                 drawFrameOnCanvas(images[0]);
+             if (!isPlaying && preloadedImages[0] && preloadedImages[0].complete) {
+                 drawFrameOnCanvas(preloadedImages[0]);
              }
         }
     });
