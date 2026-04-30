@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainContent = document.getElementById('main-content');
     
     // Animation configuration
-    const totalFrames = 240;
+    const totalFrames = 147;
     const frameBaseName = 'new frame optimized/ezgif-frame-';
     const frameExt = '.webp';
     const images = []; // kept for legacy compatibility if needed
