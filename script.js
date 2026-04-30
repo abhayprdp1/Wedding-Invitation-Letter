@@ -282,86 +282,88 @@ document.addEventListener('DOMContentLoaded', () => {
         btnRsvp.addEventListener('click', () => {
             isAttending = !isAttending;
 
-            // Play a realistic Party Popper sound using Web Audio API
-            try {
-                if (!audioCtx) {
-                    const AudioContext = window.AudioContext || window.webkitAudioContext;
-                    if (AudioContext) {
-                        audioCtx = new AudioContext();
-                    }
-                }
-                
-                if (audioCtx) {
-                    if (audioCtx.state === 'suspended') {
-                        audioCtx.resume();
+            // Play a realistic Party Popper sound asynchronously so it doesn't block UI
+            setTimeout(() => {
+                try {
+                    if (!audioCtx) {
+                        const AudioContext = window.AudioContext || window.webkitAudioContext;
+                        if (AudioContext) {
+                            audioCtx = new AudioContext();
+                        }
                     }
                     
-                    if (isAttending) {
-                        // 1. The "Pop" (fast dropping pitch)
-                        const osc = audioCtx.createOscillator();
-                        const oscGain = audioCtx.createGain();
-                        osc.type = 'square';
-                        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-                        osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1);
-                        oscGain.gain.setValueAtTime(0.6, audioCtx.currentTime);
-                        oscGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                        osc.connect(oscGain);
-                        oscGain.connect(audioCtx.destination);
-                        osc.start(audioCtx.currentTime);
-                        osc.stop(audioCtx.currentTime + 0.1);
-
-                        // 2. The "Paper/Confetti Burst" (filtered white noise)
-                        const bufferSize = Math.floor(audioCtx.sampleRate * 0.25); // 0.25 seconds of noise
-                        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-                        const data = buffer.getChannelData(0);
-                        for (let i = 0; i < bufferSize; i++) {
-                            data[i] = Math.random() * 2 - 1; // White noise
+                    if (audioCtx) {
+                        if (audioCtx.state === 'suspended') {
+                            audioCtx.resume();
                         }
                         
-                        const noise = audioCtx.createBufferSource();
-                        noise.buffer = buffer;
-                        
-                        // Highpass filter for a crisp, snappy rustle
-                        const filter = audioCtx.createBiquadFilter();
-                        filter.type = 'highpass';
-                        filter.frequency.value = 2500;
-                        
-                        const noiseGain = audioCtx.createGain();
-                        noiseGain.gain.setValueAtTime(1, audioCtx.currentTime);
-                        noiseGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
-                        
-                        noise.connect(filter);
-                        filter.connect(noiseGain);
-                        noiseGain.connect(audioCtx.destination);
-                        noise.start(audioCtx.currentTime);
-                        
-                    } else {
-                        // Soft descending pop for "Cancel"
-                        const osc = audioCtx.createOscillator();
-                        const gainNode = audioCtx.createGain();
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-                        osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
-                        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
-                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                        osc.connect(gainNode);
-                        gainNode.connect(audioCtx.destination);
-                        osc.start(audioCtx.currentTime);
-                        osc.stop(audioCtx.currentTime + 0.1);
+                        if (isAttending) {
+                            const osc = audioCtx.createOscillator();
+                            const oscGain = audioCtx.createGain();
+                            osc.type = 'square';
+                            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1);
+                            oscGain.gain.setValueAtTime(0.6, audioCtx.currentTime);
+                            oscGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                            osc.connect(oscGain);
+                            oscGain.connect(audioCtx.destination);
+                            osc.start(audioCtx.currentTime);
+                            osc.stop(audioCtx.currentTime + 0.1);
+
+                            const bufferSize = Math.floor(audioCtx.sampleRate * 0.25);
+                            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                            const data = buffer.getChannelData(0);
+                            for (let i = 0; i < bufferSize; i++) {
+                                data[i] = Math.random() * 2 - 1;
+                            }
+                            
+                            const noise = audioCtx.createBufferSource();
+                            noise.buffer = buffer;
+                            
+                            const filter = audioCtx.createBiquadFilter();
+                            filter.type = 'highpass';
+                            filter.frequency.value = 2500;
+                            
+                            const noiseGain = audioCtx.createGain();
+                            noiseGain.gain.setValueAtTime(1, audioCtx.currentTime);
+                            noiseGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                            
+                            noise.connect(filter);
+                            filter.connect(noiseGain);
+                            noiseGain.connect(audioCtx.destination);
+                            noise.start(audioCtx.currentTime);
+                        } else {
+                            const osc = audioCtx.createOscillator();
+                            const gainNode = audioCtx.createGain();
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
+                            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                            osc.connect(gainNode);
+                            gainNode.connect(audioCtx.destination);
+                            osc.start(audioCtx.currentTime);
+                            osc.stop(audioCtx.currentTime + 0.1);
+                        }
                     }
+                } catch (e) {
+                    console.warn("Audio playback failed", e);
                 }
-            } catch (e) {
-                console.warn("Audio playback failed", e);
-            }
+            }, 10);
 
             if (isAttending) {
                 // Trigger Confetti immediately
                 if (typeof confetti === 'function') {
-                    const count = 200;
+                    // Prevent GPU hang on mobile by reducing particles (backdrop-blur + 200 particles kills iOS Safari)
+                    const isMobile = window.innerWidth < 768;
+                    const count = isMobile ? 60 : 200; 
+                    
                     const defaults = {
                         origin: { y: 0.8 },
                         colors: ['#ffffff', '#d2ad52', '#658668', '#1f4037'],
-                        disableForReducedMotion: true
+                        disableForReducedMotion: true,
+                        useWorker: true, // Offload to Web Worker
+                        zIndex: 100
                     };
 
                     function fire(particleRatio, opts) {
@@ -375,8 +377,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     fire(0.25, { spread: 26, startVelocity: 55 });
                     fire(0.2, { spread: 60 });
                     fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
-                    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
-                    fire(0.1, { spread: 120, startVelocity: 45 });
+                    if (!isMobile) {
+                        fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+                        fire(0.1, { spread: 120, startVelocity: 45 });
+                    }
                 }
 
                 // Update text to "Thank you!"
