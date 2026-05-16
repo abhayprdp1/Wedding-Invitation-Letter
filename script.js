@@ -383,6 +383,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
+                // Send silent background request to Formspree to track the click
+                fetch('https://formspree.io/f/mgodgpwp', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        response: 'YES, IN SHA ALLAH', 
+                        time_clicked: new Date().toLocaleString() 
+                    })
+                }).catch(err => console.warn('Formspree log failed', err));
+
                 // Update text to "Thank you!"
                 rsvpStatus.innerHTML = `Thank you! Your response has been recorded <span style="font-style: normal">💚</span>`;
                 
